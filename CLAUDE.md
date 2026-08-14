@@ -54,6 +54,22 @@ Two rules apply everywhere, including chat responses, commits, and docs:
    landscape", no rule-of-three adjectives, no closing restatement paragraph.
    `portfolio-copy` has the full list and the reasoning.
 
+## Commits
+
+Conventional Commits, subject line only:
+`type(scope)!: lowercase summary in the imperative`
+
+Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`,
+`ci`, `chore`, `revert`. Scope is optional and names the area touched
+(`hooks`, `sanity`, `ci`). `!` before the colon marks a breaking change.
+
+Keep the subject under 72 characters and do not end it with a period. The body
+is where reasoning goes: what the change is for and why this approach, not a
+restatement of the diff. Wrap it at 80 columns.
+
+Releases are cut from annotated semver tags, so the type carries weight. Use
+`feat` and `fix` only for changes a visitor could notice.
+
 ## Tooling
 
 `context7` MCP is configured. Use it for current library documentation (Next.js,
