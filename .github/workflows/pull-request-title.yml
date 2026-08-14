@@ -1,0 +1,41 @@
+name: Pull request title
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  title:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check the title
+        env:
+          # A pull request title is untrusted input. Interpolating it into the
+          # script body instead of reading it from the environment allows
+          # command injection.
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$TITLE" > "$RUNNER_TEMP/title"
+          scripts/check-commit-message.sh "$RUNNER_TEMP/title"
+
+      - name: Check the length it squashes to
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          # GitHub appends " (#N)" to the subject when squashing, so the commit
+          # that lands is longer than the title the previous step measured.
+          subject="$TITLE (#$NUMBER)"
+          echo "Subject that will land on main: $subject"
+          if [ "${#subject}" -gt 72 ]; then
+            echo "That is ${#subject} characters, the limit is 72." >&2
+            echo "Shorten the title by at least $(( ${#subject} - 72 ))." >&2
+            exit 1
+          fi

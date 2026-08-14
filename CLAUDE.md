@@ -42,8 +42,15 @@ Four skills carry the real guidance. Load them rather than improvising:
 - **`portfolio-code`** before writing any TypeScript or React.
 - **`portfolio-data`** before touching Sanity, GROQ, or data fetching.
 
-`portfolio-code` sets the comment rule that matters most here: the default is no
-comment. Never narrate the code or the process that produced it.
+`portfolio-code` sets the comment rule that matters most here, and it applies to
+**every file in the repository**, not just TypeScript. Pipeline YAML, workflows,
+shell scripts and config are all covered.
+
+The default is no comment. Never narrate the code, and never justify a change.
+A comment saying why a line was added is a commit message in the wrong place: it
+reads as useful while the diff is on screen and as noise from then on. Record an
+external constraint or a trap someone would otherwise reintroduce, and nothing
+else.
 
 Two rules apply everywhere, including chat responses, commits, and docs:
 

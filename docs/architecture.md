@@ -181,6 +181,16 @@ All gates hard-fail. A red check blocks the merge.
 | Lighthouse CI | The budgets below, asserted |
 | Bundle size | Application JS, measured on top of the framework baseline |
 | Viewport sweep | No horizontal overflow from 320px to 1920px |
+| Branch name | Conventional Branch |
+| Commit messages | Conventional Commits, over the range the pull request adds |
+| Pull request title | The subject a squash merge will write to `main` |
+
+The convention gates call the same scripts the git hooks call, so there is one
+definition rather than two that drift. The pull request title is the exception
+and runs in GitHub Actions: a squash merge writes the title to `main` as the
+commit subject, and Azure Pipelines exposes the pull request number but not its
+title. GitHub appends ` (#N)` to that subject, so the length check has to
+measure the title plus the suffix rather than the title alone.
 
 **The performance budgets are enforced, not aspirational.** Lighthouse CI asserts
 performance ≥ 95 and accessibility 100 against the built output, and a bundle

@@ -1,0 +1,9 @@
+{
+  "applicationJsKb": 50,
+  "frameworkBaseline": {
+    "kb": 168.4,
+    "measuredWith": "next 16.3.1, react 19.2.8",
+    "measuredOn": "2026-08-14",
+    "method": "gzipped sum of the scripts a page containing only an h1 requests"
+  }
+}

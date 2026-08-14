@@ -22,3 +22,6 @@ next-env.d.ts
 
 # OS
 .DS_Store
+
+# Lighthouse CI output
+.lighthouseci/
