@@ -33,7 +33,4 @@ Azure Pipelines runs the scripts above on every pull request, plus Lighthouse, a
 viewport sweep at seven widths, and a check on how much JavaScript the page
 ships. Any of them failing blocks the merge.
 
-There is no server. Content reaches the site only when CI rebuilds, so a Sanity
-publish webhook is load-bearing rather than a convenience.
-
 `docs/architecture.md` has the decisions and the reasoning behind them.
