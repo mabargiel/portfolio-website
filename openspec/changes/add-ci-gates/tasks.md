@@ -23,7 +23,7 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
       setting, the pull request requirement and the required check in one go.
       Keep the Azure pipeline definition and the `azure-pipelines.yml` path,
       since the ruleset names the definition rather than the file contents
-- [ ] 1.8 Confirm a direct push to `main` is rejected
+- [x] 1.8 Confirm a direct push to `main` is rejected
 
 ## 2. Pipeline skeleton
 
