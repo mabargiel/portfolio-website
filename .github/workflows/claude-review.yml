@@ -21,6 +21,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           use_sticky_comment: true
+          track_progress: true
           claude_args: --max-turns 40
           prompt: |
             Review this pull request.
@@ -38,7 +39,10 @@ jobs:
             docs/architecture.md records the budgets and the constraints the
             static export imposes. Flag anything that breaks one.
 
-            Comment on what you find. Do not approve, do not request changes as
-            a blocking state, and do not push commits. You are an additional
-            reader, never a substitute for human review or a merge gate. If the
-            change looks sound, say so briefly rather than inventing findings.
+            Always post a comment, including when you find nothing. A silent
+            reviewer cannot be told apart from a broken one. If the change looks
+            sound, say so in a sentence rather than inventing findings.
+
+            Do not approve, do not request changes as a blocking state, and do
+            not push commits. You are an additional reader, never a substitute
+            for human review or a merge gate.
