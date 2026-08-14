@@ -1,0 +1,22 @@
+# AI-only product context. Holds the brief and the design reference.
+# Deliberately not in version control. A fresh clone will not have it;
+# the SessionStart hook says so rather than failing silently.
+.ai/
+
+# Local settings overrides
+.claude/settings.local.json
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env*.local
+
+# OS
+.DS_Store

@@ -1,0 +1,54 @@
+# my-portfolio
+
+Personal portfolio site for Mateusz Bargiel, freelance full-stack contractor.
+Single page, one conversion action: an email.
+
+The full brief is injected automatically at session start by a `SessionStart`
+hook, from `.ai/brief.md`. That directory is gitignored and holds the product
+context: the brief and the design reference. If the injected context is absent,
+`.ai/` is missing; ask Mateusz for it rather than guessing.
+
+## Stack
+
+Next.js (App Router) + React + TypeScript, Sanity CMS, deployed to Azure Static
+Web Apps as a static export (`output: 'export'`).
+
+Only **projects** and **experience** come from Sanity. Everything else is in code.
+
+Because the export is static, a Sanity publish webhook must trigger CI or content
+edits never reach the live site.
+
+## The design is a reference, not a spec
+
+`.ai/design-reference.html` is the design starting point. It shows the
+intended level of craft and the general direction. Layout, sections, tokens, and
+copy may all change. Do not treat it as binding, and do not preserve a detail
+purely because it is currently there.
+
+All images in it are random placeholders. Mateusz is supplying real ones.
+
+## Writing and design
+
+Four skills carry the real guidance. Load them rather than improvising:
+
+- **`portfolio-copy`** before writing any text a visitor reads.
+- **`portfolio-ui`** before writing any JSX or CSS a visitor sees.
+- **`portfolio-code`** before writing any TypeScript or React.
+- **`portfolio-data`** before touching Sanity, GROQ, or data fetching.
+
+`portfolio-code` sets the comment rule that matters most here: the default is no
+comment. Never narrate the code or the process that produced it.
+
+Two rules apply everywhere, including chat responses, commits, and docs:
+
+1. **No em dashes.** Also no ellipsis character, smart quotes, bullet character,
+   or non-breaking space. A `PostToolUse` hook blocks these in written files.
+   En dash in numeric ranges, middot as a separator, and arrows are fine.
+2. **No AI-slop prose.** No "seamless", "robust", "leverage", "in today's
+   landscape", no rule-of-three adjectives, no closing restatement paragraph.
+   `portfolio-copy` has the full list and the reasoning.
+
+## Tooling
+
+`context7` MCP is configured. Use it for current library documentation (Next.js,
+Sanity, React) rather than relying on training memory.
