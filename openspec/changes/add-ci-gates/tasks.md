@@ -2,14 +2,22 @@
 
 Outside the repository, and blocking everything after it. Requires Mateusz.
 
-- [ ] 1.1 Create the Azure DevOps organisation and a private project
-- [ ] 1.2 Link an Azure subscription to the organisation, then confirm the
-      Microsoft-hosted parallel job is granted by queueing any trivial pipeline
-      and watching it start rather than sit in the queue
-- [ ] 1.3 Create the service connection from Azure Pipelines to the GitHub
+- [x] 1.1 Create the Azure DevOps organisation and a private project
+- [x] 1.2 Create the service connection from Azure Pipelines to the GitHub
       repository
-- [ ] 1.4 Confirm Azure Pipelines can report a status check back to a pull
-      request, using a throwaway branch and a pipeline that only echoes
+- [ ] 1.3 Enable the Microsoft-hosted free parallel job by linking an Azure
+      subscription under Organization settings, Billing. The grant applies to
+      private projects automatically once billing is configured. Confirm under
+      Organization settings, Pipelines, Parallel jobs
+- [ ] 1.4 Prove Azure Pipelines can publish a check onto a GitHub pull request,
+      using a throwaway branch and a pipeline that only echoes. This is the
+      prerequisite for requiring the check in the ruleset, which cannot select a
+      check GitHub has never received
+- [ ] 1.5 Set the squash merge commit message to the pull request title and
+      description in repository settings, so the subject landing on `main` is
+      the title rather than a generated one
+- [ ] 1.6 Finish the `main` ruleset: require a pull request, require the
+      pipeline's check, and leave the bypass list empty
 
 ## 2. Pipeline skeleton
 

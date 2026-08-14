@@ -40,6 +40,25 @@ against the Conventional Commits rules documented in `CLAUDE.md`.
   revert
 - **THEN** the check accepts it, since its format is not authored
 
+### Requirement: The commit that lands on the trunk is validated
+
+Pull requests are squash merged, so the commit written to `main` is generated
+from the pull request title rather than from any commit a hook has seen. The
+pipeline SHALL validate the pull request title against the same rules it applies
+to commit subjects.
+
+#### Scenario: The pull request title does not follow the convention
+
+- **WHEN** a pull request has conforming commits but a title that does not follow
+  Conventional Commits
+- **THEN** the pipeline fails, because the title is what `main` will record
+
+#### Scenario: The squash commit is assembled
+
+- **WHEN** a pull request is squash merged
+- **THEN** the resulting commit takes its subject from the pull request title and
+  its body from the description, so the convention survives the merge
+
 ### Requirement: Local and CI enforcement share one implementation
 
 The pipeline SHALL invoke the same scripts the git hooks invoke. The rules MUST
