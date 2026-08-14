@@ -1,19 +1,85 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+trigger: none
 
-trigger:
-- main
+pr:
+  - main
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  # Full history: the commit message check walks the range this pull request adds.
+  - checkout: self
+    fetchDepth: 0
+    displayName: Checkout
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - bash: |
+      set -euo pipefail
+      version=$(tr -d '[:space:]' < .nvmrc)
+      echo "Node version from .nvmrc: $version"
+      echo "##vso[task.setvariable variable=nodeVersion]$version"
+    displayName: Resolve Node version
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(nodeVersion)
+    displayName: Use Node $(nodeVersion)
+
+  - bash: |
+      set -euo pipefail
+      node --version
+      npm --version
+    displayName: Report toolchain
+
+  - bash: npm ci
+    displayName: Install dependencies
+
+  - bash: npm run typecheck
+    displayName: "Gate: typecheck"
+
+  - bash: npm run lint
+    displayName: "Gate: lint"
+
+  - bash: npm run lint:css
+    displayName: "Gate: lint CSS"
+
+  - bash: npm run format:check
+    displayName: "Gate: format"
+
+  - bash: npm run build
+    displayName: "Gate: build"
+
+  - bash: |
+      set -euo pipefail
+      # System.PullRequest.SourceBranch is a full ref; the script wants a name.
+      scripts/check-branch-name.sh "${SOURCE_BRANCH#refs/heads/}"
+    env:
+      SOURCE_BRANCH: $(System.PullRequest.SourceBranch)
+    displayName: "Gate: branch name"
+
+  - bash: |
+      set -euo pipefail
+      target="${TARGET_BRANCH#refs/heads/}"
+      git fetch --no-tags origin "$target"
+      scripts/check-commit-range.sh "origin/$target" HEAD
+    env:
+      TARGET_BRANCH: $(System.PullRequest.TargetBranch)
+    displayName: "Gate: commit messages"
+
+  - bash: npm run check:bundle
+    displayName: "Budget: application JS"
+
+  - bash: |
+      set -euo pipefail
+      npm run preview > "$(Agent.TempDirectory)/preview.log" 2>&1 &
+      curl -s --retry 30 --retry-connrefused --retry-delay 1 -o /dev/null http://localhost:4173/
+      echo "Preview server is serving out/ on 4173."
+    displayName: Start preview server
+
+  - bash: |
+      set -euo pipefail
+      npx playwright install --with-deps chromium
+      npm run check:viewport
+    displayName: "Budget: viewport sweep"
+
+  - bash: npm run check:lighthouse
+    displayName: "Budget: Lighthouse"
