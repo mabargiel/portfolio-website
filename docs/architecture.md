@@ -19,10 +19,21 @@ change that needs a different approach.
 | Lighthouse performance (mobile) | ≥ 95 |
 | Lighthouse accessibility | 100 |
 | Largest Contentful Paint | < 1.5s on 4G |
-| Total JS shipped | < 50 kB gzipped |
+| Application JS shipped | < 50 kB gzipped, on top of the framework baseline |
 | Content edit to live | < 5 min, no developer involvement |
 | Horizontal overflow | None, at any width from 320px up |
 | Cumulative Layout Shift | < 0.1 |
+
+The JS budget counts what this site adds, not what the framework costs. Next and
+React ship about 168 kB gzipped for a page containing a single heading, measured
+on Next 16 in August 2026. No amount of Server Component discipline reduces that
+number, because it is the runtime rather than the application, so a budget
+written against the total would fail on an empty page and stay failed.
+
+What the budget does police is every kilobyte after that, which is the part a
+review can act on. A carousel, an animation runtime, or a date library trips it
+immediately. Recheck the baseline on a major Next upgrade and move it if the
+framework moves; do not fold a regression in application code into it.
 
 ## Stack
 
@@ -168,13 +179,14 @@ All gates hard-fail. A red check blocks the merge.
 | Prettier `--check` | No formatting-only diffs in review |
 | `next build` | The static export actually produces output |
 | Lighthouse CI | The budgets below, asserted |
-| Bundle size | The JS ceiling |
+| Bundle size | Application JS, measured on top of the framework baseline |
 | Viewport sweep | No horizontal overflow from 320px to 1920px |
 
 **The performance budgets are enforced, not aspirational.** Lighthouse CI asserts
-performance ≥ 95, accessibility 100, and the JS ceiling against the built output,
-and fails the run on regression. Numbers in a document that nothing checks decay
-within weeks. Since the site is itself a work sample, a regression is a defect.
+performance ≥ 95 and accessibility 100 against the built output, and a bundle
+check asserts the application JS budget. Both fail the run on regression. Numbers
+in a document that nothing checks decay within weeks. Since the site is itself a
+work sample, a regression is a defect.
 
 The same applies to responsive behaviour. The site has to work on phones and
 desktops, so a scripted sweep loads the built page at a range of widths (320,
