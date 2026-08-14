@@ -52,7 +52,9 @@ steps:
   - bash: |
       set -euo pipefail
       # System.PullRequest.SourceBranch is a full ref; the script wants a name.
-      scripts/check-branch-name.sh "${SOURCE_BRANCH#refs/heads/}"
+      branch="${SOURCE_BRANCH#refs/heads/}"
+      echo "Source branch: $branch"
+      scripts/check-branch-name.sh "$branch"
     env:
       SOURCE_BRANCH: $(System.PullRequest.SourceBranch)
     condition: eq(variables['Build.Reason'], 'PullRequest')
