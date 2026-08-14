@@ -3,10 +3,16 @@
 Personal portfolio site for Mateusz Bargiel, freelance full-stack contractor.
 Single page, one conversion action: an email.
 
-The full brief is injected automatically at session start by a `SessionStart`
-hook, from `.ai/brief.md`. That directory is gitignored and holds the product
-context: the brief and the design reference. If the injected context is absent,
-`.ai/` is missing; ask Mateusz for it rather than guessing.
+Product context is injected at session start by a `SessionStart` hook, from two
+places:
+
+- `docs/architecture.md` is committed. Decisions and the reasoning behind them.
+- `.ai/notes.md` is gitignored. Audience, launch blockers, open questions.
+
+**Nothing from `.ai/` may be copied into a committed file.** It is private
+working material and some of it must not become public. Summarise a decision
+into `docs/` if it belongs there, but never move text across. If the injected
+context is missing, ask Mateusz rather than guessing.
 
 ## Stack
 

@@ -104,7 +104,7 @@ When proposing a direction, show the reference and what you took from it.
 
 ## Non-negotiable
 
-These hold regardless of design direction, per the brief in `.ai/brief.md`:
+These hold regardless of design direction, per `docs/architecture.md`:
 
 - Semantic landmarks and heading order. No `<div>` where an element exists.
 - Visible focus states on every interactive element.

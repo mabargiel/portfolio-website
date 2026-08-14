@@ -111,7 +111,7 @@ it correctly.
 - `order` is a manual sort number. The projects list is priority-ordered, not
   chronological.
 - Date fields on `experience` are **presentational strings**, not dates.
-  Engagements overlap and several are open-ended. See `.ai/brief.md`.
+  Engagements overlap and several are open-ended. See `docs/architecture.md`.
 
 ## Failure behaviour
 

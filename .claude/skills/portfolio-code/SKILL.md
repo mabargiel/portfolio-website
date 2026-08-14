@@ -9,7 +9,7 @@ The site is a work sample. Someone will open the repo. Code quality is part of
 the product, not overhead.
 
 Project shape that drives most decisions: **a static export with a hard JS
-budget** (see `.ai/brief.md`). Server Components are the default. Client
+budget** (see `docs/architecture.md`). Server Components are the default. Client
 JavaScript is a cost you must justify per component, not a starting assumption.
 
 ## Comments

@@ -1,50 +1,54 @@
 #!/usr/bin/env bash
-# SessionStart: injects the gitignored product context so every session starts
-# oriented without the brief living in version control.
+# SessionStart: loads the project's product context.
 #
-# The brief is injected in full (~7 kB). The design reference is 23 kB and is
-# only needed for UI work, so it is announced rather than inlined.
+#   docs/architecture.md  committed. Decisions and the reasoning behind them.
+#   .ai/notes.md          gitignored. Audience, blockers, open questions.
+#
+# The design reference is 23 kB and only matters for UI work, so it is announced
+# rather than inlined.
 set -uo pipefail
 
 root="${CLAUDE_PROJECT_DIR:-$(pwd)}"
-ai="$root/.ai"
+ctx=""
 
-if [ ! -d "$ai" ]; then
+append_file() { # <path> <heading>
+  [ -f "$1" ] || return 0
+  ctx="${ctx}
+## $2
+
+$(cat "$1")
+"
+}
+
+append_file "$root/docs/architecture.md" "docs/architecture.md (committed)"
+append_file "$root/.ai/notes.md" ".ai/notes.md (private, not committed)"
+
+if [ -z "$ctx" ]; then
   jq -n '{
     hookSpecificOutput: {
       hookEventName: "SessionStart",
-      additionalContext: "NOTE: .ai/ is missing. It holds this project'"'"'s brief and design reference and is deliberately gitignored, so a fresh clone will not have it. Ask Mateusz for a copy before planning any work. Do not reconstruct it from guesswork."
+      additionalContext: "NOTE: no product context found. docs/architecture.md and .ai/notes.md are both missing. .ai/ is gitignored on purpose, so a fresh clone will not have it. Ask Mateusz for a copy before planning work. Do not reconstruct it from guesswork."
     }
   }'
   exit 0
 fi
 
-ctx="# Product context (from .ai/, gitignored)
-
-This is injected at session start. It is the authoritative product context for
-this repo. Treat it as you would CLAUDE.md.
-"
-
-if [ -f "$ai/brief.md" ]; then
+if [ -f "$root/.ai/design-reference.html" ]; then
   ctx="${ctx}
-## .ai/brief.md
+## Files not inlined here
 
-$(cat "$ai/brief.md")
+.ai/design-reference.html (23 kB) is the design starting point, not a spec.
+Read it directly before UI work. Its images are random placeholders.
 "
 fi
 
-# Announce everything else in .ai/ without inlining it.
-others=$(find "$ai" -maxdepth 1 -type f ! -name 'brief.md' -exec basename {} \; 2>/dev/null | sort)
-if [ -n "$others" ]; then
-  ctx="${ctx}
-## Also in .ai/, read on demand
+ctx="# Product context
 
-$(printf '%s' "$others" | sed 's|^|- .ai/|')
+Injected at session start. Treat it as you would CLAUDE.md.
 
-.ai/design-reference.html is the design starting point, not a spec. Read it
-before UI work. Its images are random placeholders.
-"
-fi
+Anything in .ai/ is private working material and must not be copied into
+committed files. Some of it must not become public at all.
+${ctx}"
 
 jq -n --arg c "$ctx" '{
   hookSpecificOutput: {
