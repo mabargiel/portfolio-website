@@ -2,9 +2,16 @@
 
 [![Build](https://dev.azure.com/mbargiel-private/651132b9-46af-42a8-8f00-1f0a544ce145/_apis/build/status/1?branchName=main)](https://dev.azure.com/mbargiel-private/651132b9-46af-42a8-8f00-1f0a544ce145/_build/latest?definitionId=1&branchName=main)
 [![Node](https://img.shields.io/badge/node-24_LTS-3c873a)](.nvmrc)
+[![Lighthouse performance](https://img.shields.io/badge/lighthouse_performance-%E2%89%A595-brightgreen)](lighthouserc.json)
+[![Accessibility](https://img.shields.io/badge/accessibility-100-brightgreen)](lighthouserc.json)
+[![Application JS](https://img.shields.io/badge/application_JS-%3C50_kB-brightgreen)](budgets.json)
 
 Personal portfolio site. Single page, statically exported, content for the
 projects and experience sections managed in Sanity.
+
+The badges above state thresholds CI enforces, not measurements taken once. A
+green build means every one of them currently holds; each links to the file that
+defines it.
 
 ## Stack
 
