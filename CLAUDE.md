@@ -54,6 +54,31 @@ Two rules apply everywhere, including chat responses, commits, and docs:
    landscape", no rule-of-three adjectives, no closing restatement paragraph.
    `portfolio-copy` has the full list and the reasoning.
 
+## Branches
+
+Conventional Branch (conventionalbranch.org), `<type>/<description>`.
+
+| Type | For |
+|---|---|
+| `feat/` | new functionality |
+| `fix/` | a defect on an unreleased or already-live build |
+| `hotfix/` | a defect that gets tagged to production immediately |
+| `chore/` | tooling, config, docs, CI, dependencies |
+| `release/` | available, but unused here. Releases are cut from tags |
+
+`main` carries no prefix. The description is lowercase `a-z`, `0-9`, and hyphens
+between words. No underscores, no spaces, no leading, trailing, or doubled
+hyphens. Dots only in a release version (`release/1.2.0`).
+
+Branch types and commit types are separate vocabularies and are not expected to
+line up. The prefix names what the branch is for; the commit type names what one
+change did. A `chore/` branch normally carries `docs:`, `ci:` and `build:`
+commits.
+
+The spec's agent prefixes (`ai/`, `claude/`, and the rest) are deliberately not
+used. Almost everything here is agent-assisted, so the prefix would displace the
+purpose without adding anything the commit trailer does not already record.
+
 ## Commits
 
 Conventional Commits, subject line only:
