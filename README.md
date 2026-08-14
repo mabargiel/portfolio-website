@@ -1,5 +1,8 @@
 # mateuszbargiel.dev
 
+[![Build](https://dev.azure.com/mbargiel-private/651132b9-46af-42a8-8f00-1f0a544ce145/_apis/build/status/1?branchName=main)](https://dev.azure.com/mbargiel-private/651132b9-46af-42a8-8f00-1f0a544ce145/_build/latest?definitionId=1&branchName=main)
+[![Node](https://img.shields.io/badge/node-24_LTS-3c873a)](.nvmrc)
+
 Personal portfolio site. Single page, statically exported, content for the
 projects and experience sections managed in Sanity.
 

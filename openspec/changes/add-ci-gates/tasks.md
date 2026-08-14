@@ -31,14 +31,14 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
 - [x] 2.2 Read the Node version from `.nvmrc` rather than pinning it in the
       definition, and print the resolved version in the log
 - [x] 2.3 Install dependencies with `npm ci`
-- [ ] 2.4 Verify the pipeline runs on a pull request and its result appears as a
+- [x] 2.4 Verify the pipeline runs on a pull request and its result appears as a
       GitHub check
 
 ## 3. Quality gates
 
 - [x] 3.1 Add gate steps invoking `typecheck`, `lint`, `lint:css`,
       `format:check` and `build` as npm scripts
-- [ ] 3.2 Confirm every gate passes on the current placeholder
+- [x] 3.2 Confirm every gate passes on the current placeholder
 - [ ] 3.3 Break each gate once on a scratch branch and confirm the pipeline fails
       for that reason, since a gate that has never failed is not proven
 
@@ -61,8 +61,10 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
       failing width
 - [x] 5.2 Add Lighthouse CI configuration asserting mobile performance and
       accessibility against the documented targets
-- [ ] 5.3 Determine thresholds that survive agent variance, running the pipeline
-      several times unchanged to observe the spread before fixing the numbers
+- [ ] 5.3 Determine thresholds that survive agent variance. The first hosted
+      agent run passed at the documented numbers, so 95 is not obviously wrong,
+      but one sample is not a spread. Restoring the `main` trigger accumulates
+      further samples on every merge
 - [x] 5.4 Add a script that sums the gzipped size of the scripts the built page
       requests, subtracts the recorded framework baseline, and asserts the
       remainder against the application JS budget
