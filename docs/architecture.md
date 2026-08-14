@@ -30,9 +30,34 @@ change that needs a different approach.
 |---|---|---|
 | Framework | Next.js (App Router), React, TypeScript | Server Components keep the JS budget reachable |
 | CMS | Sanity | Hosted studio, typed GROQ via TypeGen, generous free tier |
-| Styling | Token-driven CSS Modules | No utility-class framework to ship or learn |
+| Styling | Tailwind CSS v4 | CSS-first config, tokens declared in `@theme`, emits CSS rather than JS |
 | Hosting | Azure Static Web Apps | Free tier, custom domain, CI from the repo |
 | Rendering | Static export, content fetched at build time | See below |
+
+### Toolchain pinning
+
+Node 24, the current Active LTS. Pinned in `.nvmrc` and read from there by CI so
+the version lives in one place. Node 25 reached end of life on 1 June 2026 and is
+not an option.
+
+Two pins in `package.json` look like mistakes and are not.
+
+**TypeScript 7 and 6 are installed side by side.** TypeScript 7 is the native
+compiler and runs the typecheck gate. `typescript-eslint` does not support it and
+refuses to load, which takes down the whole ESLint run rather than degrading it,
+so the TypeScript 6 API has to stay reachable. The published workaround is to
+swap the package names:
+
+```json
+"@typescript/native": "npm:typescript@^7.0.2",
+"typescript": "npm:@typescript/typescript6@^6.0.2"
+```
+
+`tsc` is TypeScript 7. Anything that imports `typescript` gets the 6 API.
+
+**ESLint stays on 9.** `eslint-plugin-react`, bundled inside
+`eslint-config-next`, calls `context.getFilename()`, which ESLint 10 removed.
+Every JSX file throws. Revisit when the plugin catches up.
 
 ## The constraint that shapes everything: static export
 
