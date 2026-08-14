@@ -5,11 +5,10 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
 - [x] 1.1 Create the Azure DevOps organisation and a private project
 - [x] 1.2 Create the service connection from Azure Pipelines to the GitHub
       repository
-- [ ] 1.3 Enable the Microsoft-hosted free parallel job by linking an Azure
-      subscription under Organization settings, Billing. The grant applies to
-      private projects automatically once billing is configured. Confirm under
-      Organization settings, Pipelines, Parallel jobs
-- [ ] 1.4 Prove Azure Pipelines can publish a check onto a GitHub pull request,
+- [x] 1.3 Enable the Microsoft-hosted free parallel job by linking an Azure
+      subscription under Organization settings, Billing. Confirmed by a job
+      starting rather than queueing
+- [x] 1.4 Prove Azure Pipelines can publish a check onto a GitHub pull request,
       using a throwaway branch and a pipeline that only echoes. This is the
       prerequisite for requiring the check in the ruleset, which cannot select a
       check GitHub has never received
@@ -18,6 +17,11 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
       the title rather than a generated one
 - [ ] 1.6 Finish the `main` ruleset: require a pull request, require the
       pipeline's check, and leave the bypass list empty
+- [ ] 1.7 Merge the smoke test pull request, which exercises the squash message
+      setting, the pull request requirement and the required check in one go.
+      Keep the Azure pipeline definition and the `azure-pipelines.yml` path,
+      since the ruleset names the definition rather than the file contents
+- [ ] 1.8 Confirm a direct push to `main` is rejected
 
 ## 2. Pipeline skeleton
 
