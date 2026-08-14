@@ -17,36 +17,36 @@ steps:
       version=$(tr -d '[:space:]' < .nvmrc)
       echo "Node version from .nvmrc: $version"
       echo "##vso[task.setvariable variable=nodeVersion]$version"
-    displayName: Resolve Node version
+    displayName: Resolve Node version from .nvmrc
 
   - task: NodeTool@0
     inputs:
       versionSpec: $(nodeVersion)
-    displayName: Use Node $(nodeVersion)
+    displayName: Install Node $(nodeVersion)
 
   - bash: |
       set -euo pipefail
       node --version
       npm --version
-    displayName: Report toolchain
+    displayName: Print Node and npm versions
 
   - bash: npm ci
     displayName: Install dependencies
 
   - bash: npm run typecheck
-    displayName: "Gate: typecheck"
+    displayName: Check types
 
   - bash: npm run lint
-    displayName: "Gate: lint"
+    displayName: Lint TypeScript
 
   - bash: npm run lint:css
-    displayName: "Gate: lint CSS"
+    displayName: Lint CSS
 
   - bash: npm run format:check
-    displayName: "Gate: format"
+    displayName: Check formatting
 
   - bash: npm run build
-    displayName: "Gate: build"
+    displayName: Build the static export
 
   - bash: |
       set -euo pipefail
@@ -54,7 +54,7 @@ steps:
       scripts/check-branch-name.sh "${SOURCE_BRANCH#refs/heads/}"
     env:
       SOURCE_BRANCH: $(System.PullRequest.SourceBranch)
-    displayName: "Gate: branch name"
+    displayName: Check the branch name
 
   - bash: |
       set -euo pipefail
@@ -63,23 +63,23 @@ steps:
       scripts/check-commit-range.sh "origin/$target" HEAD
     env:
       TARGET_BRANCH: $(System.PullRequest.TargetBranch)
-    displayName: "Gate: commit messages"
+    displayName: Check the commit messages
 
   - bash: npm run check:bundle
-    displayName: "Budget: application JS"
+    displayName: Check application JS size
 
   - bash: |
       set -euo pipefail
       npm run preview > "$(Agent.TempDirectory)/preview.log" 2>&1 &
       curl -s --retry 30 --retry-connrefused --retry-delay 1 -o /dev/null http://localhost:4173/
       echo "Preview server is serving out/ on 4173."
-    displayName: Start preview server
+    displayName: Serve the export on 4173
 
   - bash: |
       set -euo pipefail
       npx playwright install --with-deps chromium
       npm run check:viewport
-    displayName: "Budget: viewport sweep"
+    displayName: Check for horizontal overflow
 
   - bash: npm run check:lighthouse
-    displayName: "Budget: Lighthouse"
+    displayName: Check Lighthouse scores
