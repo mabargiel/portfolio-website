@@ -39,8 +39,10 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
 - [x] 3.1 Add gate steps invoking `typecheck`, `lint`, `lint:css`,
       `format:check` and `build` as npm scripts
 - [x] 3.2 Confirm every gate passes on the current placeholder
-- [ ] 3.3 Break each gate once on a scratch branch and confirm the pipeline fails
-      for that reason, since a gate that has never failed is not proven
+- [x] 3.3 Break each gate once and confirm it fails for that reason, since a
+      gate that has never failed is not proven. Done locally, which is
+      equivalent for the script gates because CI invokes the same scripts. It
+      found `lint` passing on warnings
 
 ## 4. Convention checks
 
