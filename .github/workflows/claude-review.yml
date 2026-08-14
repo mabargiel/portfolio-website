@@ -21,22 +21,19 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           use_sticky_comment: true
-          claude_args: --max-turns 15
+          claude_args: --max-turns 40
           prompt: |
-            Review this pull request against the conventions this repository
-            already documents. Read CLAUDE.md and the relevant skills in
-            .claude/skills before commenting:
+            Review this pull request.
 
-            - portfolio-code for TypeScript and React, including the rule that
-              the default is no comment and that comments must never narrate
-              the code or the session that wrote it
-            - portfolio-ui for anything a visitor sees
-            - portfolio-copy for any text a visitor reads
-            - portfolio-data for Sanity, GROQ and data fetching
+            Start from CLAUDE.md, which points at the skills in .claude/skills.
+            Read the skill that matches what the diff touches rather than all of
+            them: portfolio-code for TypeScript and React, portfolio-ui for
+            anything a visitor sees, portfolio-copy for text a visitor reads,
+            portfolio-data for Sanity, GROQ and data fetching.
 
-            Also check the two rules that apply everywhere: no em dashes,
-            ellipsis characters, smart quotes or non-breaking spaces, and no
-            AI-slop prose.
+            Two rules apply to every file, including YAML and shell: no em
+            dashes, ellipsis characters, smart quotes or non-breaking spaces,
+            and no comment that justifies why a change was made.
 
             docs/architecture.md records the budgets and the constraints the
             static export imposes. Flag anything that breaks one.
