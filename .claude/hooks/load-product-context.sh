@@ -22,6 +22,7 @@ $(cat "$1")
 
 append_file "$root/docs/architecture.md" "docs/architecture.md (committed)"
 append_file "$root/.ai/notes.md" ".ai/notes.md (private, not committed)"
+append_file "$root/.ai/plan.md" ".ai/plan.md (private, not committed)"
 
 if [ -z "$ctx" ]; then
   jq -n '{

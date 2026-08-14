@@ -116,8 +116,9 @@ All gates hard-fail. A red check blocks the merge.
 | Gate | Enforces |
 |---|---|
 | `tsc --noEmit` | No type errors, no implicit `any` |
-| Lint | House rules (linters to be chosen) |
-| Format check | No formatting-only diffs in review |
+| ESLint | Code correctness and house rules |
+| Stylelint | CSS conventions |
+| Prettier `--check` | No formatting-only diffs in review |
 | `next build` | The static export actually produces output |
 | Lighthouse CI | The budgets below, asserted |
 | Bundle size | The JS ceiling |
@@ -145,15 +146,33 @@ actual conventions, the rules in `.claude/skills/`, rather than generic advice.
 be given approval rights.** Automated review that can approve its own findings
 would contradict the standard this project holds to.
 
-### CD, on tag
+### CD: staging on merge, production on tag
 
-Release is triggered by pushing an annotated semver tag (`v1.4.0`), not by a
-merge to `main`. Merging to `main` proves the code is good; tagging says it ships.
-That separation keeps the deployed version an explicit decision and makes the tag
-the single source of truth for what is live.
+Merging to `main` deploys to a **staging** environment. Pushing an annotated
+semver tag (`v1.4.0`) promotes to **production**. Merging proves the code is
+good; tagging says it ships. That separation keeps the deployed version an
+explicit decision and makes the tag the single source of truth for what is live.
 
 The pipeline builds once and deploys that artifact. It never rebuilds between
 verification and deployment, so what was tested is what ships.
+
+Staging uses a Static Web Apps **named environment**, set through the
+`deployment_environment` input on the `AzureStaticWebApp@0` task, which publishes
+to a stable URL:
+
+```
+https://<default-host-name>-staging.<region>.azurestaticapps.net
+```
+
+Named environments are the mechanism here because the automatic per-pull-request
+preview environments are a GitHub Actions feature. Microsoft's documentation is
+explicit that pull request environments are not automatically supported for
+Azure DevOps. The Free plan allows three pre-production environments alongside
+production, so a single long-lived `staging` fits comfortably.
+
+**Staging is not private.** Per Microsoft: anyone with the URL can reach a
+pre-production environment, even when the repository is private. Treat anything
+deployed there as published.
 
 ### Version on the footer
 
