@@ -1,9 +1,5 @@
 name: Pull request title
 
-# The title is what a squash merge writes to main as the commit subject, so it
-# is validated here rather than in Azure Pipelines, which exposes the pull
-# request number but not its title.
-
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
@@ -19,8 +15,9 @@ jobs:
 
       - name: Check the title
         env:
-          # Read through the environment. A pull request title is untrusted
-          # input, and interpolating it into the script body allows injection.
+          # A pull request title is untrusted input. Interpolating it into the
+          # script body instead of reading it from the environment allows
+          # command injection.
           TITLE: ${{ github.event.pull_request.title }}
         run: |
           set -euo pipefail

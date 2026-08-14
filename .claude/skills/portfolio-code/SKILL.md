@@ -1,6 +1,6 @@
 ---
 name: portfolio-code
-description: Write or refactor TypeScript and React for this portfolio site - components, hooks, types, file structure. Use before writing any .ts or .tsx file. Covers component decomposition, comment discipline, and the React and TypeScript conventions this project holds to.
+description: Write or refactor TypeScript and React for this portfolio site - components, hooks, types, file structure. Use before writing any .ts or .tsx file. Its comment rule applies to every file in the repository, including pipeline YAML, shell scripts, and config, so load it before commenting anywhere. Covers component decomposition, comment discipline, and the React and TypeScript conventions this project holds to.
 ---
 
 # Portfolio code
@@ -14,11 +14,32 @@ JavaScript is a cost you must justify per component, not a starting assumption.
 
 ## Comments
 
+**This section applies to every file in the repository**, not only `.ts` and
+`.tsx`. Pipeline YAML, GitHub Actions workflows, shell scripts, JSON and config
+are all held to it.
+
 The default is **no comment**. Code that needs a comment to be understood is
 usually code that needs renaming or splitting. Try that first.
 
 Write a comment only when it records something the code cannot: a non-obvious
-external constraint, a reason for an unusual choice, or a real trap.
+external constraint, or a trap that would otherwise be reintroduced.
+
+**Never justify a change.** A comment explaining why a line was added is a commit
+message written in the wrong place. It is obvious at the moment of the edit and
+noise forever after, because it addresses a reader who was watching the diff, and
+nobody is.
+
+```yaml
+# The action exchanges an OIDC token for its app token, so it fails without this
+id-token: write                        # <- justifies the edit. Delete it.
+
+# Anything shallower and the commit range check has no range
+fetchDepth: 0                          # <- records a trap. Keep it.
+```
+
+The test: would this comment read as odd in a file written by a person a year
+ago, with no diff in view? If the answer is yes, it belongs in the commit
+message or in `docs/`, not in the file.
 
 **Never write these:**
 

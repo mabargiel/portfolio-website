@@ -7,7 +7,7 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-  # Full history: the commit message check walks the range this pull request adds.
+  # Shallower than this and the commit message range check has no range.
   - checkout: self
     fetchDepth: 0
     displayName: Checkout

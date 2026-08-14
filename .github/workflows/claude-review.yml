@@ -1,8 +1,5 @@
 name: Claude review
 
-# The one piece that runs in GitHub Actions rather than Azure Pipelines,
-# because pull request comments belong where the pull request is.
-
 on:
   pull_request:
     types: [opened, synchronize]
@@ -10,8 +7,6 @@ on:
 permissions:
   contents: read
   pull-requests: write
-  # The action exchanges a GitHub OIDC token for its own app token, so it
-  # fails before reaching Anthropic auth without this.
   id-token: write
 
 jobs:
