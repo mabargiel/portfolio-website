@@ -79,7 +79,11 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
 - [ ] 6.2 Store the subscription token as a repository secret
 - [x] 6.3 Point the prompt at the conventions in `.claude/skills` and constrain
       the turn count
-- [ ] 6.4 Confirm it comments and confirm it holds no approval or blocking rights
+- [ ] 6.4 Confirm it comments and confirm it holds no approval or blocking
+      rights. Only verifiable on the first pull request after this one merges:
+      the action refuses to run until the workflow file matches the copy on the
+      default branch, which stops a pull request editing the workflow to reach
+      the token
 
 ## 7. Close out
 
