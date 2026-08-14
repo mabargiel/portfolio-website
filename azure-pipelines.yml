@@ -20,9 +20,9 @@ steps:
       echo "##vso[task.setvariable variable=nodeVersion]$version"
     displayName: Resolve Node version from .nvmrc
 
-  - task: NodeTool@0
+  - task: UseNode@1
     inputs:
-      versionSpec: $(nodeVersion)
+      version: $(nodeVersion)
     displayName: Install Node $(nodeVersion)
 
   - bash: |
@@ -55,6 +55,7 @@ steps:
       scripts/check-branch-name.sh "${SOURCE_BRANCH#refs/heads/}"
     env:
       SOURCE_BRANCH: $(System.PullRequest.SourceBranch)
+    condition: eq(variables['Build.Reason'], 'PullRequest')
     displayName: Check the branch name
 
   - bash: |
@@ -64,6 +65,7 @@ steps:
       scripts/check-commit-range.sh "origin/$target" HEAD
     env:
       TARGET_BRANCH: $(System.PullRequest.TargetBranch)
+    condition: eq(variables['Build.Reason'], 'PullRequest')
     displayName: Check the commit messages
 
   - bash: npm run check:bundle
@@ -84,3 +86,11 @@ steps:
 
   - bash: npm run check:lighthouse
     displayName: Check Lighthouse scores
+
+  - task: PublishPipelineArtifact@1
+    condition: always()
+    continueOnError: true
+    inputs:
+      targetPath: .lighthouseci
+      artifact: lighthouse
+    displayName: Keep the Lighthouse reports
