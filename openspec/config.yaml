@@ -1,13 +1,41 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Single-page portfolio for a freelance full-stack contractor. One conversion
+  action, an email. The site is also a work sample, so how it is built is part
+  of what it argues.
+
+  Stack: Next.js 16 (App Router), React 19, TypeScript 6, Tailwind v4, Sanity
+  for projects and experience only. Repository on GitHub, CI/CD in Azure
+  Pipelines, hosting on Azure Static Web Apps.
+
+  The constraint that shapes everything is `output: 'export'`. There is no
+  runtime server, so Server Actions, ISR, route handlers beyond static GET,
+  Sanity draft mode and visual editing are all unavailable. Content is fetched
+  at build time inside Server Components, which makes a Sanity publish webhook
+  a required component rather than an optimisation.
+
+  Budgets in docs/architecture.md are gates, not aspirations, and CI asserts
+  them. Anything that breaks one needs a different approach, not a waiver.
+
+  Conventions, all documented in CLAUDE.md:
+  - Conventional Commits for commit subjects.
+  - Conventional Branch for branch names, using feat/ fix/ hotfix/ chore/.
+  - No em dashes, ellipsis characters, smart quotes or non-breaking spaces in
+    any written file. A hook blocks them.
+  - No AI-slop prose. No "seamless", "robust", "leverage", no rule-of-three
+    adjectives, no closing restatement paragraph.
+  - Code comments default to none. Never narrate the code or the session that
+    produced it.
+
+  Four skills in .claude/skills carry the real guidance and should be loaded
+  rather than improvised around: portfolio-copy, portfolio-ui, portfolio-code,
+  portfolio-data.
+
+  The .ai directory is gitignored private working material. Nothing in it may
+  be copied into a committed file, and artifacts generated here are committed.
+  Summarise a decision into docs/ if it belongs there, but never move text
+  across.
 
 # Per-artifact rules (optional)
 # Add custom rules for specific artifacts.
