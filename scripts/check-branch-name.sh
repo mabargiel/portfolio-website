@@ -2,7 +2,15 @@
 # Conventional Branch. See the Branches section of CLAUDE.md.
 set -eu
 
-branch="${1:-$(git rev-parse --abbrev-ref HEAD)}"
+if [ "$#" -gt 0 ]; then
+  branch="$1"
+  if [ -z "$branch" ]; then
+    echo "No branch name was passed. Refusing to guess." >&2
+    exit 1
+  fi
+else
+  branch=$(git rev-parse --abbrev-ref HEAD)
+fi
 
 case "$branch" in
 main | HEAD) exit 0 ;;

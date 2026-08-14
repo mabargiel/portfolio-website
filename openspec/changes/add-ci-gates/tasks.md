@@ -53,7 +53,7 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
 - [x] 4.3 Validate the pull request title, allowing for the ` (#N)` suffix
       GitHub appends when squashing, so the title check and the subject that
       lands on `main` cannot disagree about length
-- [ ] 4.4 Verify with a deliberately malformed branch name and a malformed commit
+- [x] 4.4 Verify with a deliberately malformed branch name and a malformed commit
       subject that each fails, and that a merge commit does not
 
 ## 5. Budget checks
@@ -83,7 +83,7 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
 - [ ] 6.2 Store the subscription token as a repository secret
 - [x] 6.3 Point the prompt at the conventions in `.claude/skills` and constrain
       the turn count
-- [ ] 6.4 Confirm it comments and confirm it holds no approval or blocking
+- [x] 6.4 Confirm it comments and confirm it holds no approval or blocking
       rights. Only verifiable on the first pull request after this one merges:
       the action refuses to run until the workflow file matches the copy on the
       default branch, which stops a pull request editing the workflow to reach
@@ -92,6 +92,6 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
 ## 7. Close out
 
 - [x] 7.1 Enable branch protection on `main` requiring the pipeline's checks
-- [ ] 7.2 Confirm a pull request failing any single gate cannot be merged
+- [x] 7.2 Confirm a pull request failing any single gate cannot be merged
 - [x] 7.3 Update `docs/architecture.md` where the CI description differs from
       what was built
