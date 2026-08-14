@@ -21,6 +21,8 @@ change that needs a different approach.
 | Largest Contentful Paint | < 1.5s on 4G |
 | Total JS shipped | < 50 kB gzipped |
 | Content edit to live | < 5 min, no developer involvement |
+| Horizontal overflow | None, at any width from 320px up |
+| Cumulative Layout Shift | < 0.1 |
 
 ## Stack
 
@@ -122,11 +124,20 @@ All gates hard-fail. A red check blocks the merge.
 | `next build` | The static export actually produces output |
 | Lighthouse CI | The budgets below, asserted |
 | Bundle size | The JS ceiling |
+| Viewport sweep | No horizontal overflow from 320px to 1920px |
 
 **The performance budgets are enforced, not aspirational.** Lighthouse CI asserts
 performance ≥ 95, accessibility 100, and the JS ceiling against the built output,
 and fails the run on regression. Numbers in a document that nothing checks decay
 within weeks. Since the site is itself a work sample, a regression is a defect.
+
+The same applies to responsive behaviour. The site has to work on phones and
+desktops, so a scripted sweep loads the built page at a range of widths (320,
+375, 414, 768, 1024, 1440, 1920) and asserts `scrollWidth <= clientWidth` at
+each. Horizontal overflow is the most common responsive defect and the easiest
+to catch mechanically. Lighthouse's mobile run already covers the viewport meta
+tag, tap target sizing, and legible font sizes, so the sweep only needs to cover
+what Lighthouse does not.
 
 ### AI review on pull requests
 

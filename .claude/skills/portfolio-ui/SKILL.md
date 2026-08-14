@@ -78,9 +78,59 @@ with a specific reason.
   sources. A consistent filter, duotone, or grade makes them cohere. Without it
   the page looks assembled rather than designed.
 - **Few breakpoints, executed well.** One or two considered breakpoints beat five
-  half-tested ones.
+  half-tested ones. See the responsive section below.
 - **One distinctive structural device**, applied consistently. A recurring motif
   is what separates a designed page from a competent one. Pick one and commit.
+
+## Responsive
+
+The site must work on phones and desktops equally. A large share of this
+audience will first open it on a phone, often from a message or a profile link,
+and that first impression is the one that decides whether they keep reading.
+
+**Build mobile-first.** Write the single-column layout as the base and add
+complexity upward with `min-width` queries. Retrofitting a desktop layout down
+to a phone is where responsive bugs come from, and it tends to produce a mobile
+experience that feels like a cut-down version rather than a designed one.
+
+### Testable criteria
+
+"Responsive" is unfalsifiable on its own. These are the checks that count:
+
+- **No horizontal scrolling at any width from 320px up.** The single most common
+  failure. Usually a fixed width, a long unbroken string, or a negative margin.
+- **Content parity.** Everything reachable on desktop is reachable on mobile.
+  Hiding navigation on small screens is not a responsive strategy.
+- **Body text at 16px or larger on mobile.** Below 16px, iOS Safari zooms on
+  focus, which is jarring and hard to recover from.
+- **Tap targets at least 44 by 44 px**, with enough spacing that neighbouring
+  targets are not mis-hit.
+- **No fixed heights on anything containing text.** Text wraps differently at
+  every width and in every language; fixed heights clip it.
+- **Images never exceed the viewport** and always reserve their space, so
+  nothing reflows as they load.
+- **Layout holds at 200% browser zoom**, which is an accessibility requirement
+  as much as a responsive one.
+
+### The trap in the reference design
+
+The reference hides every nav link except Contact below 860px:
+
+```css
+.nav-links li:not(:last-child){display:none}
+```
+
+That leaves a phone visitor with no way to jump to a section on a long page. Do
+not carry this across. Either build a real small-screen navigation or drop the
+in-page nav entirely and make the page work as a single scroll. Hiding the links
+is the one option that is worse than both.
+
+### Breakpoints
+
+Pick breakpoints where **the content** breaks, not at device names. Fewer,
+well-chosen breakpoints beat a full device matrix. The reference uses a single
+one at 860px, which is defensible but means nothing is tuned between a phone and
+a laptop. Decide that deliberately rather than inheriting it.
 
 ## Research before designing
 
