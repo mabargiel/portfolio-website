@@ -63,10 +63,10 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
       failing width
 - [x] 5.2 Add Lighthouse CI configuration asserting mobile performance and
       accessibility against the documented targets
-- [ ] 5.3 Determine thresholds that survive agent variance. The first hosted
-      agent run passed at the documented numbers, so 95 is not obviously wrong,
-      but one sample is not a spread. Restoring the `main` trigger accumulates
-      further samples on every merge
+- [x] 5.3 Determine thresholds that survive agent variance. Performance 95 and
+      accessibility 100 held on every hosted agent run in this change, three
+      Lighthouse passes each with the median asserted. Reports are published as
+      an artifact, so a future red run can be diagnosed rather than guessed at
 - [x] 5.4 Add a script that sums the gzipped size of the scripts the built page
       requests, subtracts the recorded framework baseline, and asserts the
       remainder against the application JS budget
@@ -80,7 +80,7 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
 
 - [x] 6.1 Add the GitHub Actions workflow running the review action on pull
       requests
-- [ ] 6.2 Store the subscription token as a repository secret
+- [x] 6.2 Store the subscription token as a repository secret
 - [x] 6.3 Point the prompt at the conventions in `.claude/skills` and constrain
       the turn count
 - [x] 6.4 Confirm it comments and confirm it holds no approval or blocking
