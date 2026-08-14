@@ -12,12 +12,14 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
       using a throwaway branch and a pipeline that only echoes. This is the
       prerequisite for requiring the check in the ruleset, which cannot select a
       check GitHub has never received
-- [ ] 1.5 Set the squash merge commit message to the pull request title and
+- [x] 1.5 Set the squash merge commit message to the pull request title and
       description in repository settings, so the subject landing on `main` is
       the title rather than a generated one
-- [ ] 1.6 Finish the `main` ruleset: require a pull request, require the
-      pipeline's check, and leave the bypass list empty
-- [ ] 1.7 Merge the smoke test pull request, which exercises the squash message
+- [x] 1.6 Finish the `main` ruleset: require a pull request, require the
+      pipeline's check, and leave the bypass list empty. The `update` rule had
+      to be removed: it contradicts the pull request rule, since a merge is
+      itself an update, so with an empty bypass list nothing could ever merge
+- [x] 1.7 Merge the smoke test pull request, which exercises the squash message
       setting, the pull request requirement and the required check in one go.
       Keep the Azure pipeline definition and the `azure-pipelines.yml` path,
       since the ruleset names the definition rather than the file contents
@@ -46,7 +48,10 @@ Outside the repository, and blocking everything after it. Requires Mateusz.
       `System.PullRequest.SourceBranch`
 - [ ] 4.2 Add a step running `scripts/check-commit-message.sh` over the commits
       the pull request introduces
-- [ ] 4.3 Verify with a deliberately malformed branch name and a malformed commit
+- [ ] 4.3 Validate the pull request title, allowing for the ` (#N)` suffix
+      GitHub appends when squashing, so the title check and the subject that
+      lands on `main` cannot disagree about length
+- [ ] 4.4 Verify with a deliberately malformed branch name and a malformed commit
       subject that each fails, and that a merge commit does not
 
 ## 5. Budget checks
