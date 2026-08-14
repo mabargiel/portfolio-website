@@ -34,6 +34,29 @@ change that needs a different approach.
 | Hosting | Azure Static Web Apps | Free tier, custom domain, CI from the repo |
 | Rendering | Static export, content fetched at build time | See below |
 
+### Styling: a closed vocabulary
+
+Tailwind's default theme is deleted rather than extended:
+
+```css
+@theme {
+  --*: initial;
+  /* only this project's tokens are defined below */
+}
+```
+
+Everything that makes a Tailwind site identifiable as one, the stock palette, the
+default spacing rhythm, the standard radii, stops existing. The only values
+reachable from a class name are the ones this design defines.
+
+The reason is the same reason the performance numbers are asserted in CI. A
+design system that depends on everyone remembering to use it decays. Going
+off-system now requires writing `bg-[#c8a24a]`, which is visible in review, where
+a stray hex inside a stylesheet is not.
+
+Hand-written CSS is still used where utilities read worse than the real thing:
+pseudo-element decoration, and the blend-mode image grading described below.
+
 ### Toolchain pinning
 
 Node 24, the current Active LTS. Pinned in `.nvmrc` and read from there by CI so
