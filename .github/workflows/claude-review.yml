@@ -21,28 +21,34 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           use_sticky_comment: true
-          track_progress: true
           claude_args: --max-turns 40
           prompt: |
             Review this pull request.
 
             Start from CLAUDE.md, which points at the skills in .claude/skills.
-            Read the skill that matches what the diff touches rather than all of
-            them: portfolio-code for TypeScript and React, portfolio-ui for
-            anything a visitor sees, portfolio-copy for text a visitor reads,
-            portfolio-data for Sanity, GROQ and data fetching.
+            Read the one matching what the diff touches: portfolio-code for
+            TypeScript and React, portfolio-ui for anything a visitor sees,
+            portfolio-copy for text a visitor reads, portfolio-data for Sanity,
+            GROQ and data fetching. docs/architecture.md records the budgets and
+            the constraints the static export imposes.
 
-            Two rules apply to every file, including YAML and shell: no em
-            dashes, ellipsis characters, smart quotes or non-breaking spaces,
-            and no comment that justifies why a change was made.
+            Two things nothing else checks: a comment that justifies why a
+            change was made, and AI-slop prose in text a visitor reads.
 
-            docs/architecture.md records the budgets and the constraints the
-            static export imposes. Flag anything that breaks one.
+            Post one comment, with two parts.
 
-            Always post a comment, including when you find nothing. A silent
-            reviewer cannot be told apart from a broken one. If the change looks
-            sound, say so in a sentence rather than inventing findings.
+            First, a summary of what this pull request changes, three or four
+            lines, for someone about to read the diff. Take it from the code
+            rather than from the description, so that a difference between what
+            the change says it does and what it does is visible.
+
+            Second, findings, and only if there are any. Each names the file and
+            line and states the problem in a sentence or two, most serious
+            first. With no findings, the comment ends after the summary.
+
+            Never assess quality. Do not say the change looks good, do not
+            confirm that correct code is correct, and do not describe what you
+            read on the way to deciding.
 
             Do not approve, do not request changes as a blocking state, and do
-            not push commits. You are an additional reader, never a substitute
-            for human review or a merge gate.
+            not push commits.
