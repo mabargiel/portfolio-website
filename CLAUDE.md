@@ -102,6 +102,20 @@ restatement of the diff. Wrap it at 80 columns.
 Releases are cut from annotated semver tags, so the type carries weight. Use
 `feat` and `fix` only for changes a visitor could notice.
 
+## Pull requests
+
+The description is read by people outside this project, now and years from now.
+Write what changed and why, in terms a reader can check against the repository.
+
+The title is the subject that lands on `main`, since merges are squashed, so it
+follows Conventional Commits.
+
+Never include how the change was found. No "while debugging", no "it turned out
+that", no account of what was tried first. Internal task numbers, phase names,
+and anything that only makes sense to someone who watched the work happen are
+all noise to the reader and stale within a month. Evidence is welcome; a command
+and its output earn their place. The story of arriving at them does not.
+
 ## Tooling
 
 `context7` MCP is configured. Use it for current library documentation (Next.js,
