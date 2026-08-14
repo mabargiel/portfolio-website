@@ -21,6 +21,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           use_sticky_comment: true
+          track_progress: true
           claude_args: --max-turns 40
           prompt: |
             Review this pull request.
@@ -35,7 +36,9 @@ jobs:
             Two things nothing else checks: a comment that justifies why a
             change was made, and AI-slop prose in text a visitor reads.
 
-            Post one comment, with two parts.
+            Post one comment, with two parts. Keep any progress list to a
+            single item: the comment is for the reader, not a record of your
+            steps.
 
             First, a summary of what this pull request changes, three or four
             lines, for someone about to read the diff. Take it from the code
