@@ -65,18 +65,15 @@ not an option.
 
 Two pins in `package.json` look like mistakes and are not.
 
-**TypeScript 7 and 6 are installed side by side.** TypeScript 7 is the native
-compiler and runs the typecheck gate. `typescript-eslint` does not support it and
-refuses to load, which takes down the whole ESLint run rather than degrading it,
-so the TypeScript 6 API has to stay reachable. The published workaround is to
-swap the package names:
+**TypeScript stays on 6**, not the current 7. `typescript-eslint` refuses to load
+under 7, which takes down the entire ESLint run rather than degrading it. The
+workaround TypeScript publishes for this, aliasing the package names so tools
+needing the old API still resolve it, cannot be used: Next resolves the compiler
+by package name and fails the build outright when it is installed under an alias.
 
-```json
-"@typescript/native": "npm:typescript@^7.0.2",
-"typescript": "npm:@typescript/typescript6@^6.0.2"
-```
-
-`tsc` is TypeScript 7. Anything that imports `typescript` gets the 6 API.
+Both need the same npm slot, and no override reaches it, because peer dependencies
+hoist rather than nest. Next itself builds correctly under TypeScript 7, so the
+constraint is ESLint alone. Revisit when `typescript-eslint` ships support.
 
 **ESLint stays on 9.** `eslint-plugin-react`, bundled inside
 `eslint-config-next`, calls `context.getFilename()`, which ESLint 10 removed.
