@@ -1,5 +1,8 @@
-## ADDED Requirements
+# convention-checks Specification
 
+## Purpose
+TBD - created by archiving change add-ci-gates. Update Purpose after archive.
+## Requirements
 ### Requirement: Branch names are validated where they cannot be bypassed
 
 The pipeline SHALL validate the source branch name of every pull request against
@@ -42,10 +45,10 @@ against the Conventional Commits rules documented in `CLAUDE.md`.
 
 ### Requirement: The commit that lands on the trunk is validated
 
-Pull requests are squash merged, so the commit written to `main` is generated
-from the pull request title rather than from any commit a hook has seen. The
-pipeline SHALL validate the pull request title against the same rules it applies
-to commit subjects.
+The pipeline SHALL validate the pull request title against the same rules it
+applies to commit subjects. Pull requests are squash merged, so the commit
+written to `main` takes its subject from the title rather than from any commit
+a hook has seen.
 
 #### Scenario: The pull request title does not follow the convention
 
@@ -75,3 +78,4 @@ NOT be expressed a second time in the pipeline definition.
 - **WHEN** a contributor runs a check script against a branch name or message
   file
 - **THEN** it reports the same verdict the pipeline would
+
