@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "cms:types": "npm --prefix src/cms exec -- sanity schema extract --path schema.json && npm --prefix src/cms exec -- sanity typegen generate",
     "preview": "serve out -l 4173",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
@@ -20,6 +21,9 @@
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
+    "@sanity/client": "^8.0.0",
+    "@sanity/image-url": "^2.1.1",
+    "groq": "^6.9.2",
     "next": "16.3.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"
