@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
-:root {
-  --background: #fff;
-  --foreground: #171717;
+@theme static {
+  --*: initial;
+
+  --color-transparent: transparent;
+  --color-current: currentcolor;
+
+  --color-ink: #0f1d1a;
+  --color-base: #132521;
+  --color-surface: #1b322d;
+  --color-line: #2c4a42;
+  --color-line-soft: #223b35;
+
+  --color-text: #f2ede3;
+  --color-text-2: #a6b9b2;
+  --color-text-3: #8c9b96;
+
+  --color-gold: #dda13b;
+  --color-gold-lift: #e8b255;
+  --color-rust: #cc7150;
+  --color-ok: #6fbf9b;
+
+  --text-meta: 0.8125rem;
+  --text-label: 0.875rem;
+  --text-body: 1rem;
+  --text-lead: 1.1875rem;
+  --text-h3: 1.6875rem;
+  --text-h2: clamp(1.875rem, 4.5vw, 2.625rem);
+  --text-h1: clamp(2.625rem, 6.5vw, 4.5rem);
+  --text-mail: clamp(1.5rem, 4vw, 2.375rem);
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.65;
+
+  --tracking-tight: -0.015em;
+  --tracking-wide: 0.12em;
+
+  --spacing: 4px;
+
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-full: 9999px;
+
+  --container-page: 70rem;
+
+  --breakpoint-md: 53.75rem;
+  --breakpoint-lg: 70rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces), "Georgia", serif;
+  --font-body: var(--font-instrument), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    color-scheme: dark;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
 }
