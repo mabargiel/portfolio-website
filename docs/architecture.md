@@ -206,6 +206,33 @@ to catch mechanically. Lighthouse's mobile run already covers the viewport meta
 tag, tap target sizing, and legible font sizes, so the sweep only needs to cover
 what Lighthouse does not.
 
+### Testing
+
+No unit tests. Components take typed data and render it, and TypeGen with
+`defineQuery` turns a mismatch between what a query returns and what a component
+expects into a compile error. A test asserting that a component renders the
+string it was handed restates the type system.
+
+End to end tests run in Playwright against the built export served by `preview`,
+alongside the viewport sweep that already uses both.
+
+They exist for one failure mode nothing else can see. Content is fetched at build
+time, so a wrong dataset, an unpublished document or a renamed field produces a
+green build and a blank page. Lighthouse scores an empty page perfectly, the
+bundle is small, nothing overflows, and the site ships with no portfolio in it.
+
+| Assertion | Why |
+|---|---|
+| The email link is present and its `mailto:` is correct | The single conversion action. Broken, the site fails at its only job |
+| Projects and roles render, above a minimum count | Catches a build that succeeded against no content |
+| Every image has non-empty `alt` and returns 200 | `alt` is required at the schema level, so an empty one means the content is wrong |
+| No `href="#"` anywhere | The reference design ships placeholder social links, and placeholders survive |
+| No console errors on load | Cheap, and catches asset and hydration problems |
+
+Assertions are on semantics: roles, `alt`, `href`, visible text. Never on class
+names or utilities. A suite that breaks whenever the design moves is a suite
+people delete.
+
 ### AI review on pull requests
 
 `anthropics/claude-code-action` runs on PRs and posts inline review comments.
