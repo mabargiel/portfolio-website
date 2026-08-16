@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Mateusz Bargiel, full-stack engineer</title>
+    <script>
+      (function () {
+        var stored = null;
+        try {
+          stored = localStorage.getItem("lang");
+        } catch (e) {}
+        var browser = (navigator.language || "en").toLowerCase();
+        var lang = stored || (browser.indexOf("pl") === 0 ? "pl" : "en");
+        location.replace("/" + (lang === "pl" ? "pl" : "en") + "/");
+      })();
+    </script>
+    <meta http-equiv="refresh" content="0;url=/en/" />
+  </head>
+  <body></body>
+</html>

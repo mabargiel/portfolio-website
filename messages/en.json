@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "title": "Mateusz Bargiel, full-stack engineer",
+    "description": "Full-stack B2B contractor. React, .NET, Azure, DevOps. 12+ years shipping production systems."
+  },
+  "nav": {
+    "skip": "Skip to content",
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "contact": "Contact",
+    "language": "Language"
+  },
+  "hero": {
+    "kicker": "$ whoami",
+    "headline": "Full-stack engineer who <accent>ships</accent>, not just codes.",
+    "lead": "<b>React, .NET, Azure, DevOps.</b> Twelve years of production systems. AI does my boilerplate. I do the thinking.",
+    "seeWork": "See the work",
+    "emailMe": "Email me",
+    "status": "open for contracts",
+    "base": "base:",
+    "baseValue": "Krakow / remote EU",
+    "since": "since:",
+    "sinceValue": "2014",
+    "portraitAlt": "Mateusz Bargiel"
+  },
+  "about": {
+    "tag": "about",
+    "title": "The short version",
+    "sub": "Twelve years, three stacks, one habit: asking why before how.",
+    "note": "// tldr below",
+    "lede": "I take products from whiteboard to production and stay accountable for how they run afterwards.",
+    "stack": "Most of my work sits in the <b>.NET, React and Azure</b> triangle. APIs and domain logic on the backend. Interfaces people actually use on the front. And the pipeline work, CI/CD, infrastructure as code, observability, that makes releases boring in the best possible way.",
+    "ai": "I use AI tooling aggressively and on purpose. It compresses the mechanical work by an order of magnitude, so <b>your budget buys architecture, review and edge cases</b> instead of boilerplate.",
+    "reviewMark": "[review]",
+    "review": "AI drafts the boilerplate. I read every line before it ships, no exceptions, no autopilot merges.",
+    "closing": "If you need a contractor who waits for a ticket before thinking, that is someone else. If you want an engineer who asks what a feature is for before building it, write to me.",
+    "datasheetTitle": "Datasheet",
+    "datasheet": [
+      { "term": "experience", "value": "12+ years" },
+      { "term": "role", "value": "full-stack, contract" },
+      { "term": "backend", "value": "C# / .NET 8" },
+      { "term": "frontend", "value": "React / TypeScript" },
+      { "term": "cloud", "value": "Azure" },
+      { "term": "ops", "value": "Terraform, K8s, ADO" },
+      { "term": "delivery", "value": "ai-accelerated, ~10x", "tone": "gold" },
+      {
+        "term": "code review",
+        "value": "always human, no exceptions",
+        "tone": "ok"
+      },
+      { "term": "timezone", "value": "CET, UTC+1" },
+      { "term": "status", "value": "open to contracts", "tone": "ok" }
+    ]
+  },
+  "projects": {
+    "tag": "projects",
+    "title": "Selected work",
+    "sub": "{count, plural, one {# engagement} other {# engagements}}, current priorities first.",
+    "note": "// some details under NDA"
+  },
+  "experience": {
+    "tag": "experience",
+    "title": "Track record",
+    "sub": "Roles and engagements, newest first.",
+    "note": "// git log --oneline",
+    "now": "now"
+  },
+  "contact": {
+    "tag": "contact",
+    "title": "Have a project in mind?",
+    "sub": "One email. You will know within a day if I am the right fit.",
+    "note": "// response_time < 24h",
+    "terms": "CET · remote-first · EU invoicing"
+  },
+  "footer": {
+    "copyright": "© {year} Mateusz Bargiel, Krakow",
+    "note": "no template used"
+  }
+}

@@ -7,7 +7,7 @@ export const experience = defineType({
   fields: [
     defineField({
       name: 'role',
-      type: 'string',
+      type: 'localeString',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -17,7 +17,7 @@ export const experience = defineType({
     }),
     defineField({
       name: 'dateLabel',
-      type: 'string',
+      type: 'localeString',
       description: 'Shown as written, for example "Sep 2025 - now". Engagements overlap, so this is not a date range',
       validation: (rule) => rule.required(),
     }),
@@ -29,8 +29,7 @@ export const experience = defineType({
     }),
     defineField({
       name: 'description',
-      type: 'text',
-      rows: 4,
+      type: 'localeText',
       description: 'What the work was. Avoid anything that states you are still employed there',
       validation: (rule) => rule.required(),
     }),
@@ -45,6 +44,6 @@ export const experience = defineType({
     {title: 'Newest first', name: 'newest', by: [{field: 'order', direction: 'asc'}]},
   ],
   preview: {
-    select: {title: 'role', subtitle: 'org'},
+    select: {title: 'role.en', subtitle: 'org'},
   },
 })

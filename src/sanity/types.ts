@@ -15,18 +15,30 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type LocaleText = {
+  _type: "localeText";
+  en: string;
+  pl?: string;
+};
+
+export type LocaleString = {
+  _type: "localeString";
+  en: string;
+  pl?: string;
+};
+
 export type Experience = {
   _id: string;
   _type: "experience";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  role?: string;
-  org?: string;
-  dateLabel?: string;
+  role: LocaleString;
+  org: string;
+  dateLabel: LocaleString;
   current?: boolean;
-  description?: string;
-  order?: number;
+  description: LocaleText;
+  order: number;
 };
 
 export type SanityImageAssetReference = {
@@ -42,46 +54,47 @@ export type Project = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title?: string;
-  kind?: string;
+  title: LocaleString;
+  kind: LocaleString;
   client?: string;
-  period?: string;
+  period: LocaleString;
   current?: boolean;
-  description?: string;
-  outcome?: string;
-  stack?: Array<string>;
+  description: LocaleText;
+  outcome: LocaleText;
+  stack: Array<string>;
   links?: Array<{
-    label?: string;
-    url?: string;
+    label: string;
+    url: string;
     _type: "link";
     _key: string;
   }>;
-  image?: {
+  images?: Array<{
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
+    alt: LocaleString;
+    _type: "shot";
+    _key: string;
+  }>;
   diagram?: "workflow-engine" | "data-blend" | "bff";
-  order?: number;
+  order: number;
 };
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
 };
 
 export type SanityImageHotspot = {
   _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -105,9 +118,9 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: "sanity.imageDimensions";
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
+  height: number;
+  width: number;
+  aspectRatio: number;
 };
 
 export type SanityImageMetadata = {
@@ -133,14 +146,14 @@ export type SanityFileAsset = {
   title?: string;
   description?: string;
   altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
+  sha1hash: string;
+  extension: string;
+  mimeType: string;
+  size: number;
+  assetId: string;
   uploadId?: string;
-  path?: string;
-  url?: string;
+  path: string;
+  url: string;
   source?: SanityAssetSourceData;
 };
 
@@ -162,14 +175,14 @@ export type SanityImageAsset = {
   title?: string;
   description?: string;
   altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
+  sha1hash: string;
+  extension: string;
+  mimeType: string;
+  size: number;
+  assetId: string;
   uploadId?: string;
-  path?: string;
-  url?: string;
+  path: string;
+  url: string;
   metadata?: SanityImageMetadata;
   source?: SanityAssetSourceData;
 };
@@ -183,11 +196,13 @@ export type Geopoint = {
 
 export type Slug = {
   _type: "slug";
-  current?: string;
+  current: string;
   source?: string;
 };
 
 export type AllSanitySchemaTypes =
+  | LocaleText
+  | LocaleString
   | Experience
   | SanityImageAssetReference
   | Project
@@ -205,54 +220,74 @@ export type AllSanitySchemaTypes =
 
 // Source: ../sanity/queries.ts
 // Variable: projectsQuery
-// Query: *[_type == "project"] | order(order asc) {    _id,    title,    kind,    client,    period,    current,    description,    outcome,    stack,    links[]{ label, url },    diagram,    image{      alt,      asset->{ url, metadata{ lqip, dimensions{ width, height } } }    }  }
+// Query: *[_type == "project"] | order(order asc) {    _id,    title{ en, pl },    kind{ en, pl },    client,    period{ en, pl },    current,    description{ en, pl },    outcome{ en, pl },    stack,    links[]{ label, url },    diagram,    images[]{ alt{ en, pl }, asset->{ _id } }  }
 export type ProjectsQueryResult = Array<{
   _id: string;
-  title: string | null;
-  kind: string | null;
+  title: {
+    en: string;
+    pl: string | null;
+  };
+  kind: {
+    en: string;
+    pl: string | null;
+  };
   client: string | null;
-  period: string | null;
+  period: {
+    en: string;
+    pl: string | null;
+  };
   current: boolean | null;
-  description: string | null;
-  outcome: string | null;
-  stack: Array<string> | null;
+  description: {
+    en: string;
+    pl: string | null;
+  };
+  outcome: {
+    en: string;
+    pl: string | null;
+  };
+  stack: Array<string>;
   links: Array<{
-    label: string | null;
-    url: string | null;
+    label: string;
+    url: string;
   }> | null;
   diagram: "bff" | "data-blend" | "workflow-engine" | null;
-  image: {
-    alt: string | null;
+  images: Array<{
+    alt: {
+      en: string;
+      pl: string | null;
+    };
     asset: {
-      url: string | null;
-      metadata: {
-        lqip: string | null;
-        dimensions: {
-          width: number | null;
-          height: number | null;
-        } | null;
-      } | null;
+      _id: string;
     } | null;
-  } | null;
+  }> | null;
 }>;
 
 // Source: ../sanity/queries.ts
 // Variable: experienceQuery
-// Query: *[_type == "experience"] | order(order asc) {    _id,    role,    org,    dateLabel,    current,    description  }
+// Query: *[_type == "experience"] | order(order asc) {    _id,    role{ en, pl },    org,    dateLabel{ en, pl },    current,    description{ en, pl }  }
 export type ExperienceQueryResult = Array<{
   _id: string;
-  role: string | null;
-  org: string | null;
-  dateLabel: string | null;
+  role: {
+    en: string;
+    pl: string | null;
+  };
+  org: string;
+  dateLabel: {
+    en: string;
+    pl: string | null;
+  };
   current: boolean | null;
-  description: string | null;
+  description: {
+    en: string;
+    pl: string | null;
+  };
 }>;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n  *[_type == "project"] | order(order asc) {\n    _id,\n    title,\n    kind,\n    client,\n    period,\n    current,\n    description,\n    outcome,\n    stack,\n    links[]{ label, url },\n    diagram,\n    image{\n      alt,\n      asset->{ url, metadata{ lqip, dimensions{ width, height } } }\n    }\n  }\n': ProjectsQueryResult;
-    '\n  *[_type == "experience"] | order(order asc) {\n    _id,\n    role,\n    org,\n    dateLabel,\n    current,\n    description\n  }\n': ExperienceQueryResult;
+    '\n  *[_type == "project"] | order(order asc) {\n    _id,\n    title{ en, pl },\n    kind{ en, pl },\n    client,\n    period{ en, pl },\n    current,\n    description{ en, pl },\n    outcome{ en, pl },\n    stack,\n    links[]{ label, url },\n    diagram,\n    images[]{ alt{ en, pl }, asset->{ _id } }\n  }\n': ProjectsQueryResult;
+    '\n  *[_type == "experience"] | order(order asc) {\n    _id,\n    role{ en, pl },\n    org,\n    dateLabel{ en, pl },\n    current,\n    description{ en, pl }\n  }\n': ExperienceQueryResult;
   }
 }

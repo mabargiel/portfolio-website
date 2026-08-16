@@ -1,7 +1,7 @@
 import { chromium } from "playwright";
 
 const WIDTHS = [320, 375, 414, 768, 1024, 1440, 1920];
-const url = process.env.PREVIEW_URL ?? "http://localhost:4173";
+const url = process.env.PREVIEW_URL ?? "http://localhost:4173/en/";
 
 const browser = await chromium.launch();
 const page = await browser.newPage();

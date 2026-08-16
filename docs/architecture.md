@@ -118,28 +118,41 @@ above is unmeetable, and edits silently never appear.
 Only the two sections that change regularly come from the CMS. Everything else
 lives in code, because a CMS field nobody edits is pure cost.
 
+`localeString` and `localeText` are objects with a required `en` and an optional
+`pl`. Everything a visitor reads is one of the two; everything else is a plain
+field, because translating a technology name or a date range produces churn
+without meaning.
+
 ### `project`
 
 | Field | Type | Notes |
 |---|---|---|
-| `title` | string | |
-| `tag` | string | eyebrow line, e.g. "Workflow engine · Frontiers · 2025" |
-| `tagVariant` | string | `gold` or `rust`, drives the accent colour |
-| `description` | text | body paragraph |
-| `outcome` | text | pull line |
+| `title` | localeString | |
+| `kind` | localeString | first part of the eyebrow, e.g. "Workflow engine" |
+| `client` | string | omitted where the client cannot be named |
+| `period` | localeString | e.g. "2025-now"; localized because "now" is a word |
+| `current` | boolean | gold eyebrow while running, rust once finished |
+| `description` | localeText | body paragraph |
+| `outcome` | localeText | pull line |
 | `stack` | array&lt;string&gt; | joined for display |
-| `image` | image | `alt` required at the schema level |
+| `links` | array&lt;{label,url}&gt; | public URLs only |
+| `diagram` | string | selects a diagram drawn in code |
+| `images` | array&lt;image&gt; | up to two; `alt` required at the schema level |
 | `order` | number | manual sort; the list is priority-ordered, not chronological |
+
+A project shows either a diagram or its images, never both. The three diagrams
+are drawn in code rather than uploaded, because they are line art that has to
+match the palette and stay legible at any width.
 
 ### `experience`
 
 | Field | Type | Notes |
 |---|---|---|
-| `role` | string | |
+| `role` | localeString | |
 | `org` | string | |
-| `dateLabel` | string | presentational text, not a date |
+| `dateLabel` | localeString | presentational text, not a date |
 | `current` | boolean | drives the "now" marker |
-| `description` | text | |
+| `description` | localeText | |
 | `order` | number | manual sort, newest first |
 
 `dateLabel` is deliberately a string. Engagements overlap and several are
@@ -329,8 +342,40 @@ page. Request explicit dimensions and format from the Sanity CDN rather than
 shipping originals, and pull `metadata.lqip` for placeholders and
 `metadata.dimensions` to prevent layout shift.
 
+Images are plain `<img>` with a Sanity CDN `srcset`, not `next/image`. Under
+`output: 'export'` the image component cannot optimize anything, so it would add
+markup and a component boundary in exchange for nothing the CDN is not already
+doing.
+
 ## Typefaces
 
 Self-hosted rather than loaded from Google Fonts. That removes two `preconnect`
 hops, a render-blocking request, and a third-party runtime dependency, all of
 which are charged against the budgets above.
+
+Two families are loaded, Fraunces for display and Instrument Sans for body, both
+with the `latin-ext` subset because Polish needs it. Monospace is a system
+stack. A third webfont put mobile Lighthouse at 0.91 to 0.93 against a target of
+0.95: a text element that first paints in a fallback and later swaps registers
+its LCP at the swap, so every kilobyte of font ahead of the display face pushes
+the headline back. The mono is small metadata, so it was the one to give up.
+
+For the same reason nothing above the fold animates from `opacity: 0`. Chrome
+never counts an element that first paints transparent as an LCP candidate, so a
+fade-in hero measures as though the headline were never painted at all.
+
+## Localization
+
+English and Polish, as two statically exported routes under `/[locale]`. There
+is no server, so there is no locale negotiation: `/` is a static page that reads
+`navigator.language`, honours a stored choice, and forwards. That inline script
+and the one that records the choice are the only JavaScript the site author
+wrote that runs in a browser.
+
+`next-intl` is used exclusively from Server Components, which is why the
+application JS figure did not move when it was added. Pulling it into a client
+component would ship the message catalogue as well as the runtime.
+
+Polish falls back to English field by field rather than document by document, so
+a half-translated project renders as Polish where it can and English where it
+cannot, instead of switching wholesale.

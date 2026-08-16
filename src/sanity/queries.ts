@@ -1,32 +1,31 @@
 import { defineQuery } from "groq";
 
+const localized = "{ en, pl }";
+
 export const projectsQuery = defineQuery(`
   *[_type == "project"] | order(order asc) {
     _id,
-    title,
-    kind,
+    title${localized},
+    kind${localized},
     client,
-    period,
+    period${localized},
     current,
-    description,
-    outcome,
+    description${localized},
+    outcome${localized},
     stack,
     links[]{ label, url },
     diagram,
-    image{
-      alt,
-      asset->{ url, metadata{ lqip, dimensions{ width, height } } }
-    }
+    images[]{ alt${localized}, asset->{ _id } }
   }
 `);
 
 export const experienceQuery = defineQuery(`
   *[_type == "experience"] | order(order asc) {
     _id,
-    role,
+    role${localized},
     org,
-    dateLabel,
+    dateLabel${localized},
     current,
-    description
+    description${localized}
   }
 `);

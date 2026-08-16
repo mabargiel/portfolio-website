@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "title": "Mateusz Bargiel, full-stack engineer",
+    "description": "Kontraktor full-stack B2B. React, .NET, Azure, DevOps. Ponad 12 lat systemów produkcyjnych."
+  },
+  "nav": {
+    "skip": "Przejdź do treści",
+    "about": "O mnie",
+    "projects": "Projekty",
+    "experience": "Doświadczenie",
+    "contact": "Kontakt",
+    "language": "Język"
+  },
+  "hero": {
+    "kicker": "$ whoami",
+    "headline": "Full-stack engineer, który <accent>dowozi</accent>, nie tylko koduje.",
+    "lead": "<b>React, .NET, Azure, DevOps.</b> Dwanaście lat systemów produkcyjnych. AI pisze boilerplate. Myślenie zostaje po mojej stronie.",
+    "seeWork": "Zobacz projekty",
+    "emailMe": "Napisz do mnie",
+    "status": "otwarty na kontrakty",
+    "base": "baza:",
+    "baseValue": "Kraków / zdalnie UE",
+    "since": "od:",
+    "sinceValue": "2014",
+    "portraitAlt": "Mateusz Bargiel"
+  },
+  "about": {
+    "tag": "about",
+    "title": "W skrócie",
+    "sub": "Dwanaście lat, trzy stacki, jeden nawyk: pytać po co, zanim zapytam jak.",
+    "note": "// tldr poniżej",
+    "lede": "Prowadzę produkty od tablicy do produkcji i odpowiadam za to, jak działają później.",
+    "stack": "Większość mojej pracy mieści się w trójkącie <b>.NET, React i Azure</b>. API i logika domenowa po stronie backendu. Interfejsy, z których ktoś naprawdę korzysta, po stronie frontu. Do tego pipeline'y, CI/CD, infrastruktura jako kod i observability, dzięki którym wydania robią się nudne w najlepszym sensie.",
+    "ai": "Używam narzędzi AI intensywnie i świadomie. Skracają pracę mechaniczną o rząd wielkości, więc <b>twój budżet kupuje architekturę, review i przypadki brzegowe</b> zamiast boilerplate'u.",
+    "reviewMark": "[review]",
+    "review": "AI pisze boilerplate. Czytam każdą linię, zanim trafi na produkcję. Bez wyjątków, bez merge'y na autopilocie.",
+    "closing": "Jeśli szukasz kontraktora, który czeka na ticket, zanim pomyśli, to nie ja. Jeśli chcesz inżyniera, który pyta, po co jest dana funkcja, zanim ją zbuduje, napisz.",
+    "datasheetTitle": "Specyfikacja",
+    "datasheet": [
+      { "term": "doświadczenie", "value": "12+ lat" },
+      { "term": "rola", "value": "full-stack, kontrakt" },
+      { "term": "backend", "value": "C# / .NET 8" },
+      { "term": "frontend", "value": "React / TypeScript" },
+      { "term": "chmura", "value": "Azure" },
+      { "term": "ops", "value": "Terraform, K8s, ADO" },
+      { "term": "dostarczanie", "value": "wspierane AI, ~10x", "tone": "gold" },
+      {
+        "term": "code review",
+        "value": "zawsze człowiek, bez wyjątków",
+        "tone": "ok"
+      },
+      { "term": "strefa", "value": "CET, UTC+1" },
+      { "term": "status", "value": "otwarty na kontrakty", "tone": "ok" }
+    ]
+  },
+  "projects": {
+    "tag": "projects",
+    "title": "Wybrane projekty",
+    "sub": "{count, plural, one {# projekt} few {# projekty} many {# projektów} other {# projektu}}, najważniejsze na górze.",
+    "note": "// część szczegółów pod NDA"
+  },
+  "experience": {
+    "tag": "experience",
+    "title": "Ścieżka zawodowa",
+    "sub": "Role i projekty, od najnowszych.",
+    "note": "// git log --oneline",
+    "now": "teraz"
+  },
+  "contact": {
+    "tag": "contact",
+    "title": "Masz projekt na oku?",
+    "sub": "Jeden mail. W ciągu doby będziesz wiedzieć, czy pasujemy.",
+    "note": "// response_time < 24h",
+    "terms": "CET · zdalnie · faktury w UE"
+  },
+  "footer": {
+    "copyright": "© {year} Mateusz Bargiel, Kraków",
+    "note": "bez szablonu"
+  }
+}
