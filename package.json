@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "rm -rf .next/cache && next build && node scripts/render-assets.mjs",
+    "cms:types": "cd src/cms && npm exec -- sanity schema extract --path schema.json --enforce-required-fields --force && npm exec -- sanity typegen generate",
     "preview": "serve out -l 4173",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
@@ -17,9 +18,13 @@
     "check:bundle": "node scripts/check-bundle-size.mjs",
     "check:viewport": "node scripts/check-viewport.mjs",
     "check:lighthouse": "lhci autorun",
-    "prepare": "git config core.hooksPath .githooks || true"
+    "prepare": "git config core.hooksPath .githooks || true",
+    "assets": "node scripts/render-assets.mjs"
   },
   "dependencies": {
+    "@sanity/client": "^8.0.0",
+    "@sanity/image-url": "^2.1.1",
+    "groq": "^6.9.2",
     "next": "16.3.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"

@@ -1,26 +1,184 @@
 @import "tailwindcss";
 
-:root {
-  --background: #fff;
-  --foreground: #171717;
+@theme static {
+  --*: initial;
+
+  --color-transparent: transparent;
+  --color-current: currentcolor;
+
+  --color-ink: #0f1d1a;
+  --color-base: #132521;
+  --color-surface: #1b322d;
+  --color-line: #2c4a42;
+  --color-line-soft: #223b35;
+
+  --color-text: #f2ede3;
+  --color-text-2: #a6b9b2;
+  --color-text-3: #8c9b96;
+
+  --color-gold: #dda13b;
+  --color-gold-lift: #e8b255;
+  --color-rust: #cc7150;
+  --color-ok: #6fbf9b;
+
+  --color-cv-paper: #fff;
+  --color-cv-ink: #16211f;
+  --color-cv-muted: #4a5754;
+  --color-cv-accent: #8a5a12;
+  --color-cv-rule: #d5d2ca;
+
+  --text-meta: 0.8125rem;
+  --text-label: 0.875rem;
+  --text-body: 1rem;
+  --text-lead: 1.1875rem;
+  --text-h3: 1.6875rem;
+  --text-h2: clamp(1.875rem, 4.5vw, 2.625rem);
+  --text-h1: clamp(2.625rem, 6.5vw, 4.5rem);
+  --text-mail: clamp(1.5rem, 4vw, 2.375rem);
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+
+  --animate-rise: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-settle: settle 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-breathe: breathe 3s ease-in-out infinite;
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.65;
+
+  --tracking-tight: -0.015em;
+  --tracking-wide: 0.12em;
+
+  --spacing: 4px;
+
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-full: 9999px;
+
+  --container-page: 70rem;
+
+  --breakpoint-sm: 23.4375rem;
+  --breakpoint-md: 53.75rem;
+  --breakpoint-lg: 70rem;
+
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: ease;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* No opacity: Chrome never counts an element that first paints transparent as
+   an LCP candidate, and above-the-fold content has to stay eligible. */
+@page {
+  size: a4;
+  margin: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes settle {
+  from {
+    translate: 0 12px;
+  }
+
+  to {
+    translate: 0 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* A view timeline is the only way to reveal on scroll without JavaScript. It
+   needs the @supports guard: without the timeline the element would keep the
+   0% keyframe and never appear. */
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 28%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@theme inline {
+  --font-display: var(--font-fraunces), "Georgia", serif;
+  --font-body: var(--font-instrument), system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+  --font-cv-display: var(--font-cv-display), "Georgia", serif;
+  --font-cv-body: var(--font-cv-body), system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  a[href],
+  summary,
+  button {
+    cursor: pointer;
+  }
 }

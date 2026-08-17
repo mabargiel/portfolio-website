@@ -5,3 +5,4 @@ next-env.d.ts
 package-lock.json
 *.md
 openspec/
+src/cms/
