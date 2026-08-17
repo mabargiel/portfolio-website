@@ -14,10 +14,10 @@ what it argues.
 Treated as constraints, not aspirations. A change that breaks one of these is a
 change that needs a different approach.
 
-| Criterion | Target |
-|---|---|
-| Lighthouse performance (mobile) | ≥ 95 |
-| Lighthouse accessibility | 100 |
+| Criterion | Target | Gated in CI |
+|---|---|---|
+| Lighthouse performance (mobile) | ≥ 95 | warned, see below |
+| Lighthouse accessibility | 100 | yes |
 | Largest Contentful Paint | < 1.5s on 4G |
 | Application JS shipped | < 50 kB gzipped, on top of the framework baseline |
 | Content edit to live | < 5 min, no developer involvement |
@@ -205,11 +205,27 @@ commit subject, and Azure Pipelines exposes the pull request number but not its
 title. GitHub appends ` (#N)` to that subject, so the length check has to
 measure the title plus the suffix rather than the title alone.
 
-**The performance budgets are enforced, not aspirational.** Lighthouse CI asserts
-performance ≥ 95 and accessibility 100 against the built output, and a bundle
-check asserts the application JS budget. Both fail the run on regression. Numbers
-in a document that nothing checks decay within weeks. Since the site is itself a
-work sample, a regression is a defect.
+**The performance budgets are enforced, not aspirational**, but not all of them
+can be enforced on a shared build agent. Numbers in a document that nothing
+checks decay within weeks, so what CI asserts has to be something CI can measure
+twice and get the same answer.
+
+Lighthouse's composite performance score is not that. Three runs of one commit
+on a two-core agent returned 0.85, 0.95 and 0.92, where the same commit scores
+0.96 on a developer machine. The score is a weighted blend of timings, and the
+mobile run multiplies an already-slow CPU by four. A gate on the blend fails at
+random, and a gate that fails at random is one people learn to skip.
+
+So CI hard-fails on the parts that hold still: accessibility at 100, which is
+audits rather than timings, Total Blocking Time under 300ms against a measured
+17 to 35ms, and Cumulative Layout Shift under 0.1 against a measured zero. Those
+catch what actually regresses. Ship an animation runtime and Total Blocking Time
+moves; ship an image without dimensions and Cumulative Layout Shift moves. The
+application JS budget is asserted separately and exactly, by reading the script
+tags out of the export.
+
+The composite score stays as a warning, and ≥ 95 remains the number to hold. It
+is verified on a quiet machine before a release rather than on every push.
 
 The same applies to responsive behaviour. The site has to work on phones and
 desktops, so a scripted sweep loads the built page at a range of widths (320,
