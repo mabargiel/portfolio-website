@@ -7,6 +7,12 @@ pr:
 pool:
   vmImage: ubuntu-latest
 
+# The dataset is public and the project id identifies it in CDN URLs, so
+# neither is a secret. The build fetches content, so it cannot run without them.
+variables:
+  SANITY_PROJECT_ID: afeko6yc
+  SANITY_DATASET: production
+
 steps:
   # Shallower than this and the commit message range check has no range.
   - checkout: self
