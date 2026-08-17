@@ -364,18 +364,59 @@ For the same reason nothing above the fold animates from `opacity: 0`. Chrome
 never counts an element that first paints transparent as an LCP candidate, so a
 fade-in hero measures as though the headline were never painted at all.
 
-## Localization
+## The CV
 
-English and Polish, as two statically exported routes under `/[locale]`. There
-is no server, so there is no locale negotiation: `/` is a static page that reads
-`navigator.language`, honours a stored choice, and forwards. That inline script
-and the one that records the choice are the only JavaScript the site author
-wrote that runs in a browser.
+The site is English only. The CV is the bilingual artefact, downloadable from
+the nav as a PDF per language.
 
-`next-intl` is used exclusively from Server Components, which is why the
-application JS figure did not move when it was added. Pulling it into a client
-component would ship the message catalogue as well as the runtime.
+It is a page, not a document format. `/cv/en` and `/cv/pl` render from the same
+Sanity content the site uses, and `scripts/build-cv.mjs` prints them with
+Playwright after `next build`. Content stays in one place, and the CV cannot
+drift from the site the way a hand-maintained PDF does.
+
+### Written to be parsed
+
+Applicant tracking systems and the language models now doing first-pass
+screening both read the extracted text layer, not the layout. That constrains
+the design more than taste does:
+
+- **One column.** Extraction follows document order. Two columns interleave.
+- **Conventional headings.** Summary, Experience, Skills, Education. Parsers key
+  off the words.
+- **Dates as ranges with a dash.** The site writes "2023 → now"; an arrow reads
+  as part of the month, so the CV rewrites it.
+- **Contact details as text**, including the full github.com and linkedin.com
+  paths, because extraction takes visible text and not `href`.
+- **No layout tables, no meaning carried by an icon**, and no text baked into an
+  image.
+
+Verify a change by extracting the text, not by looking at the PDF.
+
+What the CV deliberately does not do is hide keywords in white-on-white text or
+stuff a block of skills off the page. Screening tools flag both, and it would
+misrepresent the person the document is for.
+
+### Whole font files
+
+The CV loads its fonts with `next/font/local` rather than `next/font/google`.
+Google's CSS splits a family into one file per unicode range. A Polish word
+mixes glyphs from the latin and latin-ext files, Chrome writes a separate text
+run for each, and every extractor reads the gap between them as a space:
+`Niezale z ny freelancer`. Sixty-three words in the Polish CV broke that way
+before the switch, and the document exists to be searched.
+
+The site keeps `next/font/google`, where the split costs nothing.
+
+## Localization## Localization
+
+Only the CV has two languages. `next-intl` covers its labels and its two routes,
+used exclusively from Server Components, which is why the application JS figure
+did not move when it was added.
 
 Polish falls back to English field by field rather than document by document, so
-a half-translated project renders as Polish where it can and English where it
-cannot, instead of switching wholesale.
+a half-translated CV renders as Polish where it can and English where it cannot,
+instead of switching wholesale.
+
+The site itself was briefly bilingual and is not any more. English is the
+language its readers hire in, and a second copy of every sentence is a second
+copy to keep true.

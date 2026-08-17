@@ -46,8 +46,11 @@ steps:
   - bash: npm run format:check
     displayName: Check formatting
 
+  - bash: npx playwright install --with-deps chromium
+    displayName: Install Chromium
+
   - bash: npm run build
-    displayName: Build the static export
+    displayName: Build the static export and the CV PDFs
 
   - bash: |
       set -euo pipefail
@@ -80,10 +83,7 @@ steps:
       echo "Preview server is serving out/ on 4173."
     displayName: Serve the export on 4173
 
-  - bash: |
-      set -euo pipefail
-      npx playwright install --with-deps chromium
-      npm run check:viewport
+  - bash: npm run check:viewport
     displayName: Check for horizontal overflow
 
   - bash: npm run check:lighthouse

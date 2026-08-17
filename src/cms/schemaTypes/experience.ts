@@ -34,6 +34,17 @@ export const experience = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'location',
+      type: 'string',
+      description: 'City and country, or "remote". Shown on the CV only',
+    }),
+    defineField({
+      name: 'bullets',
+      type: 'array',
+      description: 'CV only. What you did and what came of it, one line each',
+      of: [{type: 'localeString'}],
+    }),
+    defineField({
       name: 'order',
       type: 'number',
       description: 'Newest first, lowest number first',

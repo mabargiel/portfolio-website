@@ -1,17 +1,14 @@
-import { useTranslations } from "next-intl";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/site";
 import { Section } from "./Section";
 
 export function Contact() {
-  const t = useTranslations("contact");
-
   return (
     <Section
       id="contact"
-      tag={t("tag")}
-      title={t("title")}
-      sub={t("sub")}
-      note={t("note")}
+      tag="contact"
+      title="Have a project in mind?"
+      sub="One email. You will know within a day if I am the right fit."
+      note="// response_time < 24h"
     >
       <a
         href={`mailto:${EMAIL}`}
@@ -41,7 +38,7 @@ export function Contact() {
             linkedin.com/in/mbargiel
           </a>
         </li>
-        <li>{t("terms")}</li>
+        <li>CET · remote-first · EU invoicing</li>
       </ul>
     </Section>
   );

@@ -5,7 +5,7 @@ import { join } from "node:path";
 const OUT = "out";
 const budgets = JSON.parse(readFileSync("budgets.json", "utf8"));
 
-const html = readFileSync(join(OUT, "en", "index.html"), "utf8");
+const html = readFileSync(join(OUT, "index.html"), "utf8");
 const sources = [
   ...new Set(
     [...html.matchAll(/<script[^>]+src="([^"]+\.js)"/g)].map((m) => m[1]),
@@ -13,7 +13,7 @@ const sources = [
 ];
 
 if (sources.length === 0) {
-  console.error("No script tags found in out/en/index.html.");
+  console.error("No script tags found in out/index.html.");
   console.error("Either the build produced nothing or the markup changed.");
   process.exit(1);
 }

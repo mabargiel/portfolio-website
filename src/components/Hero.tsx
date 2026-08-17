@@ -1,30 +1,26 @@
-import { useTranslations } from "next-intl";
 import { EMAIL } from "@/site";
 
 const portraitMask =
   "linear-gradient(to bottom, #000 90%, transparent 100%)" as const;
 
 export function Hero() {
-  const t = useTranslations("hero");
-
   return (
     <header id="top" className="border-line-soft border-b">
       <div className="max-w-page mx-auto grid gap-11 px-6 py-18 md:grid-cols-[1.35fr_1fr] md:items-center md:gap-15 md:py-22">
         <div>
           <p className="text-label text-text-2 animate-settle mb-5 font-mono">
-            <span className="text-gold">~/mateusz-bargiel</span> {t("kicker")}
+            <span className="text-gold">~/mateusz-bargiel</span> $ whoami
           </p>
           <h1 className="font-display text-h1 animate-settle leading-tight font-medium tracking-tight [animation-delay:80ms]">
-            {t.rich("headline", {
-              accent: (chunks) => <em className="text-gold">{chunks}</em>,
-            })}
+            Full-stack engineer who <em className="text-gold">ships</em>, not
+            just codes.
           </h1>
           <p className="text-text-2 text-lead animate-settle mt-6 mb-9 max-w-[520px] [animation-delay:160ms]">
-            {t.rich("lead", {
-              b: (chunks) => (
-                <strong className="text-text font-medium">{chunks}</strong>
-              ),
-            })}
+            <strong className="text-text font-medium">
+              React, .NET, Azure, DevOps.
+            </strong>{" "}
+            Twelve years of production systems. AI does my boilerplate. I do the
+            thinking.
           </p>
 
           <div className="animate-settle flex flex-wrap gap-3.5 [animation-delay:240ms]">
@@ -32,13 +28,13 @@ export function Hero() {
               href="#projects"
               className="bg-gold hover:bg-gold-lift text-ink rounded-md px-6.5 py-3.5 font-medium transition-colors"
             >
-              {t("seeWork")}
+              See the work
             </a>
             <a
               href={`mailto:${EMAIL}`}
               className="border-line hover:border-gold rounded-md border px-6.5 py-3.5 font-medium transition-colors"
             >
-              {t("emailMe")}
+              Email me
             </a>
           </div>
 
@@ -48,14 +44,13 @@ export function Hero() {
                 aria-hidden="true"
                 className="bg-ok animate-breathe mr-2 inline-block size-1.75 rounded-full align-middle"
               />
-              <span className="text-text-2">{t("status")}</span>
+              <span className="text-text-2">open for contracts</span>
             </li>
             <li>
-              {t("base")} <span className="text-text-2">{t("baseValue")}</span>
+              base: <span className="text-text-2">Krakow / remote EU</span>
             </li>
             <li>
-              {t("since")}{" "}
-              <span className="text-text-2">{t("sinceValue")}</span>
+              since: <span className="text-text-2">2014</span>
             </li>
           </ul>
         </div>
@@ -65,7 +60,7 @@ export function Hero() {
             src="/portrait.webp"
             srcSet="/portrait-500.webp 500w, /portrait-700.webp 700w, /portrait.webp 900w"
             sizes="(min-width: 53.75rem) 34vw, min(420px, 100vw - 3rem)"
-            alt={t("portraitAlt")}
+            alt="Mateusz Bargiel"
             width={900}
             height={1089}
             fetchPriority="high"

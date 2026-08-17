@@ -1,7 +1,7 @@
 import { defineRouting } from "next-intl/routing";
 
-// A static export has no server to negotiate on, so the prefix is always
-// present and `/` is a client-side redirect. See public/index.html.
+// The site is English only. These locales exist for the downloadable CV, which
+// is rendered as a page per language and printed to PDF at build time.
 export const routing = defineRouting({
   locales: ["en", "pl"],
   defaultLocale: "en",

@@ -21,6 +21,12 @@
   --color-rust: #cc7150;
   --color-ok: #6fbf9b;
 
+  --color-cv-paper: #fff;
+  --color-cv-ink: #16211f;
+  --color-cv-muted: #4a5754;
+  --color-cv-accent: #8a5a12;
+  --color-cv-rule: #d5d2ca;
+
   --text-meta: 0.8125rem;
   --text-label: 0.875rem;
   --text-body: 1rem;
@@ -64,6 +70,11 @@
 
 /* No opacity: Chrome never counts an element that first paints transparent as
    an LCP candidate, and above-the-fold content has to stay eligible. */
+@page {
+  size: a4;
+  margin: 0;
+}
+
 @keyframes settle {
   from {
     translate: 0 12px;
@@ -116,6 +127,8 @@
   --font-display: var(--font-fraunces), "Georgia", serif;
   --font-body: var(--font-instrument), system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+  --font-cv-display: var(--font-cv-display), "Georgia", serif;
+  --font-cv-body: var(--font-cv-body), system-ui, sans-serif;
 }
 
 @layer base {

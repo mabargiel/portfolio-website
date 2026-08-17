@@ -101,6 +101,12 @@ export const project = defineType({
       },
     }),
     defineField({
+      name: 'onCv',
+      type: 'boolean',
+      description: 'Include this project in the downloadable CV',
+      initialValue: false,
+    }),
+    defineField({
       name: 'order',
       type: 'number',
       description: 'Priority order, lowest first. The list is not chronological',

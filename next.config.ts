@@ -9,11 +9,6 @@ const nextConfig: NextConfig = {
   // The default image loader throws under `output: 'export'`. Sizing and format
   // negotiation happen on Sanity's CDN instead.
   images: { unoptimized: true },
-  // `/` is public/index.html. The export serves it directly; the dev server
-  // only reaches it by filename, and would otherwise 404 on the bare domain.
-  ...(process.env.NODE_ENV === "development" && {
-    rewrites: async () => [{ source: "/", destination: "/index.html" }],
-  }),
 };
 
 export default createNextIntlPlugin("./src/i18n/request.ts")(nextConfig);

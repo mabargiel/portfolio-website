@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/build-cv.mjs",
     "cms:types": "cd src/cms && npm exec -- sanity schema extract --path schema.json --enforce-required-fields --force && npm exec -- sanity typegen generate",
     "preview": "serve out -l 4173",
     "typecheck": "next typegen && tsc --noEmit",
@@ -18,7 +18,8 @@
     "check:bundle": "node scripts/check-bundle-size.mjs",
     "check:viewport": "node scripts/check-viewport.mjs",
     "check:lighthouse": "lhci autorun",
-    "prepare": "git config core.hooksPath .githooks || true"
+    "prepare": "git config core.hooksPath .githooks || true",
+    "cv": "node scripts/build-cv.mjs"
   },
   "dependencies": {
     "@sanity/client": "^8.0.0",

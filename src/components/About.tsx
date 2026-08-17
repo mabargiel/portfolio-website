@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-import { useTranslations } from "next-intl";
 import { Section } from "./Section";
 
 type Row = { term: string; value: string; tone?: keyof typeof tones };
@@ -9,36 +7,68 @@ const tones = {
   ok: "text-ok",
 };
 
-function strong(chunks: ReactNode) {
-  return <strong className="text-text font-medium">{chunks}</strong>;
-}
+const datasheet: Row[] = [
+  { term: "experience", value: "12+ years" },
+  { term: "role", value: "full-stack, contract" },
+  { term: "backend", value: "C# / .NET 8" },
+  { term: "frontend", value: "React / TypeScript" },
+  { term: "cloud", value: "Azure" },
+  { term: "ops", value: "Terraform, K8s, ADO" },
+  { term: "delivery", value: "ai-accelerated, ~10x", tone: "gold" },
+  { term: "code review", value: "always human, no exceptions", tone: "ok" },
+  { term: "timezone", value: "CET, UTC+1" },
+  { term: "status", value: "open to contracts", tone: "ok" },
+];
 
 export function About() {
-  const t = useTranslations("about");
-  const datasheet: Row[] = t.raw("datasheet");
-
   return (
     <Section
       id="about"
-      tag={t("tag")}
-      title={t("title")}
-      sub={t("sub")}
-      note={t("note")}
+      tag="about"
+      title="The short version"
+      sub="Twelve years, three stacks, one habit: asking why before how."
+      note="// tldr below"
     >
       <div className="grid items-start gap-11 md:grid-cols-[1.2fr_1fr] md:gap-16">
         <div className="text-text-2 [&>p]:mb-4.5">
-          <p className="text-lead text-text">{t("lede")}</p>
-          <p>{t.rich("stack", { b: strong })}</p>
-          <p>{t.rich("ai", { b: strong })}</p>
+          <p className="text-lead text-text">
+            I take products from whiteboard to production and stay accountable
+            for how they run afterwards.
+          </p>
+          <p>
+            Most of my work sits in the{" "}
+            <strong className="text-text font-medium">
+              .NET, React and Azure
+            </strong>{" "}
+            triangle. APIs and domain logic on the backend. Interfaces people
+            actually use on the front. And the pipeline work, CI/CD,
+            infrastructure as code, observability, that makes releases boring in
+            the best possible way.
+          </p>
+          <p>
+            I use AI tooling aggressively and on purpose. It compresses the
+            mechanical work by an order of magnitude, so{" "}
+            <strong className="text-text font-medium">
+              your budget buys architecture, review and edge cases
+            </strong>{" "}
+            instead of boilerplate.
+          </p>
 
           <div className="border-gold bg-gold/6 my-5.5 flex items-baseline gap-3 border-l-2 px-4 py-3.5">
             <span className="text-meta text-gold shrink-0 font-mono">
-              {t("reviewMark")}
+              [review]
             </span>
-            <p className="text-text">{t("review")}</p>
+            <p className="text-text">
+              AI drafts the boilerplate. I read every line before it ships, no
+              exceptions, no autopilot merges.
+            </p>
           </div>
 
-          <p>{t("closing")}</p>
+          <p>
+            If you need a contractor who waits for a ticket before thinking,
+            that is someone else. If you want an engineer who asks what a
+            feature is for before building it, write to me.
+          </p>
         </div>
 
         <aside
@@ -49,7 +79,7 @@ export function About() {
             id="datasheet-heading"
             className="text-gold py-3 text-xs font-medium tracking-wide uppercase"
           >
-            {t("datasheetTitle")}
+            Datasheet
           </h3>
           <dl>
             {datasheet.map(({ term, value, tone }) => (

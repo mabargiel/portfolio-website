@@ -27,6 +27,36 @@ export type LocaleString = {
   pl?: string;
 };
 
+export type Cv = {
+  _id: string;
+  _type: "cv";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  headline: LocaleString;
+  location: LocaleString;
+  summary: LocaleText;
+  skills?: Array<{
+    category?: LocaleString;
+    items?: Array<string>;
+    _type: "group";
+    _key: string;
+  }>;
+  education?: Array<{
+    qualification?: LocaleString;
+    school?: string;
+    period?: string;
+    _type: "entry";
+    _key: string;
+  }>;
+  languages?: Array<{
+    name?: LocaleString;
+    level?: LocaleString;
+    _type: "entry";
+    _key: string;
+  }>;
+};
+
 export type Experience = {
   _id: string;
   _type: "experience";
@@ -38,6 +68,12 @@ export type Experience = {
   dateLabel: LocaleString;
   current?: boolean;
   description: LocaleText;
+  location?: string;
+  bullets?: Array<
+    {
+      _key: string;
+    } & LocaleString
+  >;
   order: number;
 };
 
@@ -78,6 +114,7 @@ export type Project = {
     _key: string;
   }>;
   diagram?: "workflow-engine" | "data-blend" | "bff";
+  onCv?: boolean;
   order: number;
 };
 
@@ -203,6 +240,7 @@ export type Slug = {
 export type AllSanitySchemaTypes =
   | LocaleText
   | LocaleString
+  | Cv
   | Experience
   | SanityImageAssetReference
   | Project
@@ -283,11 +321,104 @@ export type ExperienceQueryResult = Array<{
   };
 }>;
 
+// Source: ../sanity/queries.ts
+// Variable: cvQuery
+// Query: {    "profile": *[_type == "cv"][0]{      headline{ en, pl },      location{ en, pl },      summary{ en, pl },      skills[]{ category{ en, pl }, items },      education[]{ qualification{ en, pl }, school, period },      languages[]{ name{ en, pl }, level{ en, pl } }    },    "roles": *[_type == "experience"] | order(order asc) {      _id,      role{ en, pl },      org,      location,      current,      dateLabel{ en, pl },      description{ en, pl },      bullets[]{ en, pl }    },    "projects": *[_type == "project" && onCv == true] | order(order asc) {      _id,      title{ en, pl },      kind{ en, pl },      client,      period{ en, pl },      outcome{ en, pl },      stack,      links[]{ label, url }    }  }
+export type CvQueryResult = {
+  profile: {
+    headline: {
+      en: string;
+      pl: string | null;
+    };
+    location: {
+      en: string;
+      pl: string | null;
+    };
+    summary: {
+      en: string;
+      pl: string | null;
+    };
+    skills: Array<{
+      category: {
+        en: string;
+        pl: string | null;
+      } | null;
+      items: Array<string> | null;
+    }> | null;
+    education: Array<{
+      qualification: {
+        en: string;
+        pl: string | null;
+      } | null;
+      school: string | null;
+      period: string | null;
+    }> | null;
+    languages: Array<{
+      name: {
+        en: string;
+        pl: string | null;
+      } | null;
+      level: {
+        en: string;
+        pl: string | null;
+      } | null;
+    }> | null;
+  } | null;
+  roles: Array<{
+    _id: string;
+    role: {
+      en: string;
+      pl: string | null;
+    };
+    org: string;
+    location: string | null;
+    current: boolean | null;
+    dateLabel: {
+      en: string;
+      pl: string | null;
+    };
+    description: {
+      en: string;
+      pl: string | null;
+    };
+    bullets: Array<{
+      en: string;
+      pl: string | null;
+    }> | null;
+  }>;
+  projects: Array<{
+    _id: string;
+    title: {
+      en: string;
+      pl: string | null;
+    };
+    kind: {
+      en: string;
+      pl: string | null;
+    };
+    client: string | null;
+    period: {
+      en: string;
+      pl: string | null;
+    };
+    outcome: {
+      en: string;
+      pl: string | null;
+    };
+    stack: Array<string>;
+    links: Array<{
+      label: string;
+      url: string;
+    }> | null;
+  }>;
+};
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '\n  *[_type == "project"] | order(order asc) {\n    _id,\n    title{ en, pl },\n    kind{ en, pl },\n    client,\n    period{ en, pl },\n    current,\n    description{ en, pl },\n    outcome{ en, pl },\n    stack,\n    links[]{ label, url },\n    diagram,\n    images[]{ alt{ en, pl }, asset->{ _id } }\n  }\n': ProjectsQueryResult;
     '\n  *[_type == "experience"] | order(order asc) {\n    _id,\n    role{ en, pl },\n    org,\n    dateLabel{ en, pl },\n    current,\n    description{ en, pl }\n  }\n': ExperienceQueryResult;
+    '\n  {\n    "profile": *[_type == "cv"][0]{\n      headline{ en, pl },\n      location{ en, pl },\n      summary{ en, pl },\n      skills[]{ category{ en, pl }, items },\n      education[]{ qualification{ en, pl }, school, period },\n      languages[]{ name{ en, pl }, level{ en, pl } }\n    },\n    "roles": *[_type == "experience"] | order(order asc) {\n      _id,\n      role{ en, pl },\n      org,\n      location,\n      current,\n      dateLabel{ en, pl },\n      description{ en, pl },\n      bullets[]{ en, pl }\n    },\n    "projects": *[_type == "project" && onCv == true] | order(order asc) {\n      _id,\n      title{ en, pl },\n      kind{ en, pl },\n      client,\n      period{ en, pl },\n      outcome{ en, pl },\n      stack,\n      links[]{ label, url }\n    }\n  }\n': CvQueryResult;
   }
 }

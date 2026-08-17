@@ -1,5 +1,3 @@
-import { pick } from "@/i18n/sanity";
-import type { Locale } from "@/i18n/routing";
 import { imageSrc, imageSrcSet } from "@/sanity/image";
 import type { ProjectsQueryResult } from "@/sanity/types";
 import { ProjectDiagram } from "./ProjectDiagram";
@@ -8,23 +6,17 @@ type Project = ProjectsQueryResult[number];
 
 export function ProjectCase({
   project,
-  locale,
   flip,
 }: {
   project: Project;
-  locale: Locale;
   flip: boolean;
 }) {
-  const eyebrow = [
-    pick(project.kind, locale),
-    project.client,
-    pick(project.period, locale),
-  ]
+  const eyebrow = [project.kind.en, project.client, project.period.en]
     .filter(Boolean)
     .join(" · ");
 
   const shots = (project.images ?? []).flatMap((shot) =>
-    shot.asset ? [{ id: shot.asset._id, alt: pick(shot.alt, locale) }] : [],
+    shot.asset ? [{ id: shot.asset._id, alt: shot.alt.en }] : [],
   );
   const ratio = shots.length > 1 ? "aspect-[2.6/1]" : "aspect-[16/10]";
 
@@ -68,11 +60,11 @@ export function ProjectCase({
           {eyebrow}
         </span>
         <h3 className="font-display text-h3 mb-3 leading-snug font-medium">
-          {pick(project.title, locale)}
+          {project.title.en}
         </h3>
-        <p className="text-text-2 mb-4">{pick(project.description, locale)}</p>
+        <p className="text-text-2 mb-4">{project.description.en}</p>
         <p className="border-gold text-text mb-4 border-l-2 pl-3.5">
-          {pick(project.outcome, locale)}
+          {project.outcome.en}
         </p>
         <p className="text-text-3 font-mono text-xs">
           {project.stack.join(" · ")}

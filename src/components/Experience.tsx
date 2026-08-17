@@ -1,26 +1,16 @@
-import { useTranslations } from "next-intl";
-import { pick } from "@/i18n/sanity";
-import type { Locale } from "@/i18n/routing";
 import type { ExperienceQueryResult } from "@/sanity/types";
 import { Section } from "./Section";
 
-export function Experience({
-  roles,
-  locale,
-}: {
-  roles: ExperienceQueryResult;
-  locale: Locale;
-}) {
-  const t = useTranslations("experience");
+export function Experience({ roles }: { roles: ExperienceQueryResult }) {
   if (roles.length === 0) return null;
 
   return (
     <Section
       id="experience"
-      tag={t("tag")}
-      title={t("title")}
-      sub={t("sub")}
-      note={t("note")}
+      tag="experience"
+      title="Track record"
+      sub="Roles and engagements, newest first."
+      note="// git log --oneline"
     >
       <ol className="max-w-[780px]">
         {roles.map((role) => (
@@ -35,15 +25,15 @@ export function Experience({
               }`}
             />
             <p className="text-text-3 text-meta font-mono tracking-[0.04em]">
-              {pick(role.dateLabel, locale)}
-              {role.current && <span className="text-ok"> → {t("now")}</span>}
+              {role.dateLabel.en}
+              {role.current && <span className="text-ok"> → now</span>}
             </p>
             <h3 className="font-display mt-1.5 text-[1.3125rem] leading-snug font-medium">
-              {pick(role.role, locale)}
+              {role.role.en}
             </h3>
             <p className="text-gold text-label font-mono">{role.org}</p>
             <p className="text-text-2 mt-2.5 max-w-[620px]">
-              {pick(role.description, locale)}
+              {role.description.en}
             </p>
           </li>
         ))}

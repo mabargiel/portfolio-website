@@ -58,11 +58,13 @@ These change what gets built, so they come before building. Requires Mateusz.
 - [ ] 7.3 Compare the rendered page against the reference at 320, 768 and 1440,
       and note anything carried over that was never decided
 
-## 8. Localization
+## 8. The CV
 
-- [x] 8.1 English and Polish as two static routes, with `/` detecting the
-      browser language and forwarding
-- [x] 8.2 Localized CMS fields with per-field fallback to English
-- [x] 8.3 Confirm next-intl adds nothing to the client bundle
-- [ ] 8.4 Mateusz reviews the Polish copy, in `messages/pl.json` and in the
-      studio. Image `alt` text is English in both locales
+- [x] 8.1 Downloadable CV as a PDF per language, from a nav control
+- [x] 8.2 CMS fields for CV-only content, with per-field fallback to English
+- [x] 8.3 Rendered from the same Sanity content as the site, printed at build
+- [x] 8.4 Confirm the text layer extracts in reading order, in both languages
+- [x] 8.5 Site is English only; next-intl is scoped to the CV
+- [ ] 8.6 Mateusz supplies education and spoken languages. Both sections omit
+      themselves until the CMS has them
+- [ ] 8.7 Mateusz reviews the Polish, in `messages/pl.json` and in the studio
