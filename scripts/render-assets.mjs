@@ -4,10 +4,9 @@ import { chromium } from "playwright";
 
 const PORT = 4199;
 const ORIGIN = `http://localhost:${PORT}`;
-const OUT_DIR = "out/cv";
-const PUBLIC_DIR = "public/cv";
+const OG = { width: 1200, height: 630 };
 
-const filename = (locale) => `mateusz-bargiel-cv-${locale}.pdf`;
+const cvName = (locale) => `mateusz-bargiel-cv-${locale}.pdf`;
 
 async function waitForServer(timeoutMs = 20000) {
   const deadline = Date.now() + timeoutMs;
@@ -33,8 +32,8 @@ const server = spawn("npx", ["serve", "out", "-l", String(PORT)], {
 
 try {
   await waitForServer();
-  await mkdir(OUT_DIR, { recursive: true });
-  await mkdir(PUBLIC_DIR, { recursive: true });
+  await mkdir("out/cv", { recursive: true });
+  await mkdir("public/cv", { recursive: true });
 
   const browser = await chromium.launch();
   const page = await browser.newPage();
@@ -44,16 +43,23 @@ try {
     // Chrome will otherwise print whatever the fallback face rendered.
     await page.evaluate(() => document.fonts.ready);
 
-    const path = `${OUT_DIR}/${filename(locale)}`;
+    const path = `out/cv/${cvName(locale)}`;
     await page.pdf({
       path,
       format: "A4",
       printBackground: true,
       preferCSSPageSize: true,
     });
-    await copyFile(path, `${PUBLIC_DIR}/${filename(locale)}`);
+    await copyFile(path, `public/cv/${cvName(locale)}`);
     console.log(`  ${path}`);
   }
+
+  await page.setViewportSize(OG);
+  await page.goto(`${ORIGIN}/og/`, { waitUntil: "networkidle" });
+  await page.evaluate(() => document.fonts.ready);
+  await page.screenshot({ path: "out/og.png" });
+  await copyFile("out/og.png", "public/og.png");
+  console.log("  out/og.png");
 
   await browser.close();
 } finally {

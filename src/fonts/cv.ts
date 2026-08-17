@@ -1,10 +1,8 @@
 import localFont from "next/font/local";
 
-// The CV loads whole font files rather than next/font/google, which splits a
-// family into one file per unicode range. A Polish word then mixes glyphs from
-// the latin and latin-ext files, Chrome emits a text run per file, and every
-// extractor reads the gap as a space: "Niezale z ny". That makes the Polish CV
-// unsearchable to the systems it exists to be read by.
+// Whole files, not next/font/google. Google splits a family into one file per
+// unicode range, so a Polish word mixes glyphs from two files, Chrome writes a
+// text run for each, and extractors read the gap as a space: "Niezale z ny".
 const display = localFont({
   src: "./Fraunces-500.ttf",
   weight: "500",

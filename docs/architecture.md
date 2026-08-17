@@ -315,6 +315,26 @@ A publish webhook from Sanity triggers the pipeline so content edits reach the
 site. Content-only rebuilds deploy from the current release tag; they do not
 create a new version.
 
+## Findability
+
+The site is one page, so search work is mostly about how it appears elsewhere.
+
+`SITE_URL` in `src/site.ts` is the single place the domain is written. Open
+Graph consumers, WhatsApp and LinkedIn among them, will not resolve a relative
+image, so every social URL is built absolute from it.
+
+The social card is a route rendered at 1200x630 and screenshotted alongside the
+CV, for the same reason the CV is a page: it stays in step with the design
+instead of being a file someone remembers to re-export.
+
+`robots.txt` hides `/cv/en/`, `/cv/pl/` and `/og/`, which are the templates the
+PDFs and the card are rendered from. It deliberately does not hide `/cv/`,
+which would take the PDFs with it.
+
+A `Person` block in JSON-LD carries the name, role, location and profile links.
+It is the shape Google and the assistants built on it read first, and none of
+it is inferable from prose.
+
 ## Cost
 
 Everything in this stack runs on a free tier. The two things worth knowing:

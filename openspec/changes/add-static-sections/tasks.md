@@ -48,7 +48,7 @@ These change what gets built, so they come before building. Requires Mateusz.
 
 - [x] 6.1 Delete the generated page and `public/next.svg`, `vercel.svg`,
       `file.svg`, `globe.svg`, `window.svg`
-- [ ] 6.2 Replace the default favicon
+- [x] 6.2 Replace the default favicon
 - [x] 6.3 Search the built output for template remnants
 
 ## 7. Gates
@@ -68,3 +68,12 @@ These change what gets built, so they come before building. Requires Mateusz.
 - [ ] 8.6 Mateusz supplies education and spoken languages. Both sections omit
       themselves until the CMS has them
 - [ ] 8.7 Mateusz reviews the Polish, in `messages/pl.json` and in the studio
+
+## 9. Findability
+
+- [x] 9.1 Favicon, apple touch icon and a 512px mark
+- [x] 9.2 Open Graph and Twitter card, with an image rendered at build
+- [x] 9.3 robots.txt and sitemap.xml
+- [x] 9.4 Person structured data
+- [ ] 9.5 Confirm the production domain. `SITE_URL` assumes mbargiel.dev, and
+      canonical, sitemap and every social URL are built from it
