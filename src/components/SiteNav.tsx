@@ -12,12 +12,12 @@ export function SiteNav() {
       <div className="max-w-page mx-auto flex min-h-16 flex-wrap items-center justify-between gap-x-4 px-6">
         <a
           href="#top"
-          className="text-label hidden font-mono font-medium md:inline"
+          className="text-label order-1 py-4 font-mono font-medium md:py-0"
         >
           mateusz<span className="text-gold">.</span>bargiel
         </a>
 
-        <ul className="text-meta sm:text-label flex items-center gap-3.5 md:gap-6.5">
+        <ul className="text-meta sm:text-label border-line-soft order-3 flex w-full items-center justify-between border-t md:order-2 md:w-auto md:justify-start md:gap-6.5 md:border-t-0">
           {sections.map(({ href, label }) => (
             <li key={href}>
               <a
@@ -38,7 +38,7 @@ export function SiteNav() {
           </li>
         </ul>
 
-        <div className="ml-auto">
+        <div className="order-2 md:order-3">
           <CvDownload />
         </div>
       </div>

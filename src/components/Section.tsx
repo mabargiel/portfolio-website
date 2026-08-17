@@ -13,7 +13,7 @@ export function Section({ id, tag, title, sub, note, children }: SectionProps) {
   return (
     <section
       id={id}
-      className="border-line-soft scroll-mt-26 border-b py-20 last-of-type:border-b-0 sm:scroll-mt-16 md:py-25"
+      className="border-line-soft scroll-mt-28 border-b py-20 last-of-type:border-b-0 md:scroll-mt-16 md:py-25"
     >
       <div className="max-w-page mx-auto px-6">
         <div className="reveal mb-14 max-w-[660px]">

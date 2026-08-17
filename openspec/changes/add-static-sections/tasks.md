@@ -75,5 +75,5 @@ These change what gets built, so they come before building. Requires Mateusz.
 - [x] 9.2 Open Graph and Twitter card, with an image rendered at build
 - [x] 9.3 robots.txt and sitemap.xml
 - [x] 9.4 Person structured data
-- [ ] 9.5 Confirm the production domain. `SITE_URL` assumes mbargiel.dev, and
+- [x] 9.5 Confirm the production domain. `SITE_URL` is mbargiel.dev, and
       canonical, sitemap and every social URL are built from it
