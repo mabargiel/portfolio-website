@@ -364,6 +364,17 @@ For the same reason nothing above the fold animates from `opacity: 0`. Chrome
 never counts an element that first paints transparent as an LCP candidate, so a
 fade-in hero measures as though the headline were never painted at all.
 
+### The build discards Next's fetch cache
+
+`npm run build` removes `.next/cache` before it runs. Content arrives through
+`fetch`, and Next persists fetch responses across builds, so a warm cache
+rebuilds the site from the previous publish. Every gate passes and the export
+looks correct; it is simply the old content.
+
+That matters because a content edit is supposed to reach the site through the
+Sanity webhook and nothing else. Caching the build directory to save a minute
+would break exactly that path, and break it quietly.
+
 ## The CV
 
 The site is English only. The CV is the bilingual artefact, downloadable from

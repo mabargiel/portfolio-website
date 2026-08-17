@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
-import { hasLocale } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CvSection } from "@/components/cv/CvSection";
-import { pick, type Localized } from "@/i18n/sanity";
-import { routing, type Locale } from "@/i18n/routing";
+import {
+  cvLabels,
+  isCvLocale,
+  pick,
+  type CvLocale,
+  type Localized,
+} from "@/cv/locale";
 import { client } from "@/sanity/client";
 import { cvQuery } from "@/sanity/queries";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/site";
@@ -12,7 +15,7 @@ import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/site";
 // arrow, which they read as part of the month.
 function dateRange(
   role: { dateLabel: Localized; current: boolean | null },
-  locale: Locale,
+  locale: CvLocale,
   present: string,
 ) {
   const label = pick(role.dateLabel, locale).replace("→", "–");
@@ -21,11 +24,9 @@ function dateRange(
 
 export default async function Cv({ params }: PageProps<"/cv/[locale]">) {
   const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) notFound();
+  if (!isCvLocale(locale)) notFound();
 
-  setRequestLocale(locale);
-
-  const t = await getTranslations("cv");
+  const t = cvLabels[locale];
   const { profile, roles, projects } = await client.fetch(cvQuery);
 
   const contact = [
@@ -52,13 +53,13 @@ export default async function Cv({ params }: PageProps<"/cv/[locale]">) {
       </header>
 
       {profile && (
-        <CvSection title={t("summary")}>
+        <CvSection title={t.summary}>
           <p>{pick(profile.summary, locale)}</p>
         </CvSection>
       )}
 
       {roles.length > 0 && (
-        <CvSection title={t("experience")}>
+        <CvSection title={t.experience}>
           {roles.map((role) => (
             <article key={role._id} className="mb-3.5 break-inside-avoid">
               <div className="flex flex-wrap items-baseline justify-between gap-x-4">
@@ -67,7 +68,7 @@ export default async function Cv({ params }: PageProps<"/cv/[locale]">) {
                   <span className="text-cv-accent">, {role.org}</span>
                 </h3>
                 <p className="text-cv-muted text-[8.5pt] whitespace-nowrap">
-                  {dateRange(role, locale, t("present"))}
+                  {dateRange(role, locale, t.present)}
                   {role.location && ` · ${role.location}`}
                 </p>
               </div>
@@ -87,7 +88,7 @@ export default async function Cv({ params }: PageProps<"/cv/[locale]">) {
       )}
 
       {projects.length > 0 && (
-        <CvSection title={t("projects")}>
+        <CvSection title={t.projects}>
           {projects.map((project) => (
             <article key={project._id} className="mb-3 break-inside-avoid">
               <div className="flex flex-wrap items-baseline justify-between gap-x-4">
@@ -110,7 +111,7 @@ export default async function Cv({ params }: PageProps<"/cv/[locale]">) {
       )}
 
       {profile?.skills && profile.skills.length > 0 && (
-        <CvSection title={t("skills")}>
+        <CvSection title={t.skills}>
           {profile.skills.map((group) => (
             <p key={group.category?.en} className="mb-1">
               <span className="font-medium">
@@ -123,7 +124,7 @@ export default async function Cv({ params }: PageProps<"/cv/[locale]">) {
       )}
 
       {profile?.education && profile.education.length > 0 && (
-        <CvSection title={t("education")}>
+        <CvSection title={t.education}>
           {profile.education.map((entry) => (
             <div
               key={`${entry.school}${entry.period}`}
@@ -144,7 +145,7 @@ export default async function Cv({ params }: PageProps<"/cv/[locale]">) {
       )}
 
       {profile?.languages && profile.languages.length > 0 && (
-        <CvSection title={t("languages")}>
+        <CvSection title={t.languages}>
           <p>
             {profile.languages
               .map((entry) =>

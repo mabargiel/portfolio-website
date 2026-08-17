@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/build-cv.mjs",
+    "build": "rm -rf .next/cache && next build && node scripts/build-cv.mjs",
     "cms:types": "cd src/cms && npm exec -- sanity schema extract --path schema.json --enforce-required-fields --force && npm exec -- sanity typegen generate",
     "preview": "serve out -l 4173",
     "typecheck": "next typegen && tsc --noEmit",
@@ -26,7 +26,6 @@
     "@sanity/image-url": "^2.1.1",
     "groq": "^6.9.2",
     "next": "16.3.1",
-    "next-intl": "^4.13.6",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },

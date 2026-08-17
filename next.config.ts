@@ -1,4 +1,3 @@
-import createNextIntlPlugin from "next-intl/plugin";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -11,4 +10,4 @@ const nextConfig: NextConfig = {
   images: { unoptimized: true },
 };
 
-export default createNextIntlPlugin("./src/i18n/request.ts")(nextConfig);
+export default nextConfig;

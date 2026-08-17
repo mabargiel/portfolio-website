@@ -1,4 +1,4 @@
-import { CV_PDF } from "@/site";
+import { CvDownload } from "./CvDownload";
 
 const sections = [
   { href: "#about", label: "About" },
@@ -38,32 +38,8 @@ export function SiteNav() {
           </li>
         </ul>
 
-        <div className="border-line text-meta ml-auto flex items-center gap-2.5 rounded-md border px-3 py-1.5 font-mono">
-          <span className="text-text-3">
-            <span className="sm:hidden">CV</span>
-            <span className="hidden sm:inline">Download CV</span>
-          </span>
-          <a
-            href={CV_PDF.en}
-            download
-            hrefLang="en"
-            aria-label="Download CV in English, PDF"
-            className="text-gold hover:text-gold-lift py-1.5 transition-colors"
-          >
-            EN
-          </a>
-          <span aria-hidden="true" className="text-line">
-            |
-          </span>
-          <a
-            href={CV_PDF.pl}
-            download
-            hrefLang="pl"
-            aria-label="Pobierz CV po polsku, PDF"
-            className="text-text-3 hover:text-text py-1.5 transition-colors"
-          >
-            PL
-          </a>
+        <div className="ml-auto">
+          <CvDownload />
         </div>
       </div>
     </nav>
