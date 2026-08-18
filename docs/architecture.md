@@ -283,10 +283,21 @@ would contradict the standard this project holds to.
 ### The resource is described, not clicked
 
 `infra/main.bicep` describes the Static Web App: one resource, Free tier, in
-West Europe. Applying it is one command against a resource group:
+West Europe. Standing it up from nothing:
 
 ```
+az account set --subscription <the one that should be billed>
+az group create --name portfolio-rg --location westeurope
 az deployment group create --resource-group portfolio-rg --template-file infra/main.bicep
+```
+
+The first line is not optional and is the reason this list exists. `az` carries
+a default subscription, and an account that is a guest in someone else's
+directory will happily create billable resources there without saying so. Check
+whose tenant is active before creating anything:
+
+```
+az account show --query "{subscription:name, user:user.name, tenant:tenantId}"
 ```
 
 Bicep rather than Terraform, for now. Terraform needs a state backend, and a
