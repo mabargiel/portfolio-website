@@ -352,6 +352,19 @@ version is fixed per build, which is what a deployed artifact should report.
 The footer version is also the fastest way to confirm a deploy actually landed,
 without checking a pipeline.
 
+### The studio is hosted, the site is not rebuilt by it
+
+`sanity deploy` publishes the studio to `mbargiel-portfolio.sanity.studio`,
+recorded as `studioHost` in `src/cms/sanity.cli.ts` so the name is in the
+repository rather than in one person's shell history. Editing content needs a
+browser and a Sanity login, not a checkout.
+
+Publishing there changes nothing on the site by itself. The site is a static
+export built once and served as files, so an edit reaches a visitor only when
+something rebuilds it. That is what the webhook below is for, and without it a
+hosted studio is a convincing way to believe you have published something you
+have not.
+
 ### Sanity webhook
 
 A publish webhook from Sanity triggers the pipeline so content edits reach the
