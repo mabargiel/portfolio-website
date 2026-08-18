@@ -498,6 +498,17 @@ The hidden state is scoped to a class the script adds before paint, so without
 JavaScript, or with `prefers-reduced-motion`, nothing is ever hidden. A reveal
 that leaves content invisible when its script fails is worse than no reveal.
 
+The same observer marks the current section in the navigation. It watches a
+band across the middle of the viewport rather than the whole of it, so one link
+is current at a time instead of every section that happens to be on screen.
+Current is a brighter label and a gold rule under it; contact stays gold
+because it is the conversion action, and two golds competing would say that
+both are where you are.
+
+The rule that marks it is unlayered. Tailwind's utilities sit in
+`@layer utilities`, which beats `@layer base` whatever the specificity, so
+anything overriding a utility cannot live in a layer.
+
 ### The build discards Next's fetch cache
 
 `npm run build` removes `.next/cache` before it runs. Content arrives through

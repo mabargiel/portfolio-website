@@ -17,7 +17,7 @@ export function Contact() {
         {EMAIL}
       </a>
 
-      <ul className="text-meta text-text-3 reveal mt-10 flex flex-wrap gap-x-7 gap-y-2 font-mono">
+      <ul className="text-meta text-text-3 reveal mt-10 flex flex-wrap items-center gap-x-7 gap-y-2 font-mono">
         <li>
           <a
             href={GITHUB_URL}
