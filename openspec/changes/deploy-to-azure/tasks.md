@@ -8,6 +8,10 @@
 
 - [x] 2.1 `infra/main.bicep` describing the Static Web App, Free tier
 - [x] 2.2 Deploy it to a resource group and record the command in `docs/`
+- [ ] 2.4 Redeploy into Mateusz's own subscription. The first resource was
+      created in a tenant he is only a guest in, so it is billed to someone
+      else and deletable by them. A cross-tenant move is not supported, so the
+      hostname, the deployment token and the domain validation token all change
 - [x] 2.3 Confirm the resource is Free tier and in one region
 
 ## 3. Serving
