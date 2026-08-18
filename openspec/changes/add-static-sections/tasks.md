@@ -65,8 +65,8 @@ These change what gets built, so they come before building. Requires Mateusz.
 - [x] 8.3 Rendered from the same Sanity content as the site, printed at build
 - [x] 8.4 Confirm the text layer extracts in reading order, in both languages
 - [x] 8.5 Site is English only; next-intl is scoped to the CV
-- [ ] 8.6 Mateusz supplies education and spoken languages. Both sections omit
-      themselves until the CMS has them
+- [x] 8.6 Mateusz supplies education and spoken languages. Both are in the CMS;
+      the language levels are deliberately blank rather than guessed
 - [ ] 8.7 Mateusz reviews the Polish, in `messages/pl.json` and in the studio
 
 ## 9. Findability
