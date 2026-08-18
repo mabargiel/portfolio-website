@@ -8,10 +8,10 @@
 
 - [x] 2.1 `infra/main.bicep` describing the Static Web App, Free tier
 - [x] 2.2 Deploy it to a resource group and record the command in `docs/`
-- [ ] 2.4 Redeploy into Mateusz's own subscription. The first resource was
-      created in a tenant he is only a guest in, so it is billed to someone
-      else and deletable by them. A cross-tenant move is not supported, so the
-      hostname, the deployment token and the domain validation token all change
+- [x] 2.4 Redeploy into Mateusz's own subscription. The first resource was
+      created in a tenant he is only a guest in. It now runs in the
+      btopservice.net tenant, in West US 2, because Static Web Apps exists in
+      five regions and West Europe refuses new subscriptions
 - [x] 2.3 Confirm the resource is Free tier and in one region
 
 ## 3. Serving
@@ -44,17 +44,22 @@
 
 ## 7. The studio and the content path
 
+Carried into the `publish-content` change. The deployment path they depend on
+is green, which is what they were waiting for.
+
 - [x] 7.1 Record `studioHost` so the deploy is not an interactive prompt
-- [ ] 7.2 `sanity deploy`, once the hostname is confirmed
-- [ ] 7.3 Publish webhook, so an edit rebuilds. Deferred until the deploy path
-      is green: a webhook onto a broken pipeline proves nothing
+- [ ] 7.2 `sanity deploy`, once the hostname is confirmed. Carried into the
+      publish-content change
+- [ ] 7.3 Publish webhook, so an edit rebuilds. Carried into the same change,
+      now that the deploy path it depends on is green
 
 ## 8. Verify
 
 - [x] 8.1 A merge to `main` reaches the staging URL
-- [ ] 8.2 A tag reaches production, and the footer shows it
+- [x] 8.2 A tag reaches production, and the footer shows it: v1.0.0 · 78d340c
 - [x] 8.3 An unknown path returns the project's 404
 - [x] 8.4 Lighthouse and the viewport sweep against staging: performance 0.96,
       accessibility 1.00, seven widths clean, both CVs still extracting
-- [ ] 8.5 The same against production, where SEO is measurable because the
-      environment is not sending `x-robots-tag`
+- [x] 8.5 The same against production: performance 0.95, accessibility 1.00,
+      and SEO 1.00, which staging could not show because it sends
+      `x-robots-tag: none`

@@ -55,8 +55,12 @@ These change what gets built, so they come before building. Requires Mateusz.
 
 - [x] 7.1 Lighthouse accessibility 100 and mobile performance at or above 95
 - [x] 7.2 Every existing gate green
-- [ ] 7.3 Compare the rendered page against the reference at 320, 768 and 1440,
-      and note anything carried over that was never decided
+- [x] 7.3 Compare the rendered page against the reference at 320, 768 and 1440.
+      Font, size, weight and tracking match exactly. Two things drifted without
+      a decision, both in the hero headline: line height is 1.1 against the
+      reference's 1.05, and the text column measures 581px against 609px, which
+      wraps the headline to four lines rather than three. Neither is a defect
+      and both are Mateusz's call, recorded here rather than silently kept
 
 ## 8. The CV
 
@@ -65,9 +69,10 @@ These change what gets built, so they come before building. Requires Mateusz.
 - [x] 8.3 Rendered from the same Sanity content as the site, printed at build
 - [x] 8.4 Confirm the text layer extracts in reading order, in both languages
 - [x] 8.5 Site is English only; next-intl is scoped to the CV
-- [ ] 8.6 Mateusz supplies education and spoken languages. Both sections omit
-      themselves until the CMS has them
-- [ ] 8.7 Mateusz reviews the Polish, in `messages/pl.json` and in the studio
+- [x] 8.6 Mateusz supplies education and spoken languages. Both are in the CMS;
+      the language levels are deliberately blank rather than guessed
+- [ ] 8.7 Mateusz reviews the Polish, in the studio. Not a code task and not
+      one this change can close: the text is his to approve
 
 ## 9. Findability
 
