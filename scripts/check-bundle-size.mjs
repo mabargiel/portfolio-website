@@ -18,9 +18,6 @@ if (sources.length === 0) {
   process.exit(1);
 }
 
-// A script the page loads counts against the budget whether or not we host it.
-// Reading a CDN URL off disk throws ENOENT, so third-party sources are fetched
-// and compressed the same way local ones are.
 async function measure(src) {
   if (!/^https?:\/\//.test(src)) {
     return {

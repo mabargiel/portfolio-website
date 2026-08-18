@@ -32,8 +32,6 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
 };
 
-// The class has to exist before the first paint, or every reveal flashes in
-// and then hides. useEffect runs after hydration, which is too late for that.
 const markReveals = "document.documentElement.classList.add('reveals')";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {

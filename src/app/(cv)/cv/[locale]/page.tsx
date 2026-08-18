@@ -11,8 +11,6 @@ import { client } from "@/sanity/client";
 import { cvQuery } from "@/sanity/queries";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/site";
 
-// Date parsers expect a dash between the ends of a range. The site renders an
-// arrow, which they read as part of the month.
 function dateRange(
   role: { dateLabel: Localized; current: boolean | null },
   locale: CvLocale,

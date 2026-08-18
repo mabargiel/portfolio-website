@@ -1,9 +1,7 @@
-// Inlined at build time, so only a tagged build can carry a version.
 const version = process.env.NEXT_PUBLIC_APP_VERSION;
 const commit = process.env.NEXT_PUBLIC_APP_COMMIT;
 
 export function SiteFooter() {
-  // A tagged build names its release. Anything else has only its commit.
   const build = version ?? commit;
 
   return (

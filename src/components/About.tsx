@@ -89,7 +89,6 @@ export function About() {
             {datasheet.map(({ term, value, tone }, index) => (
               <div
                 key={term}
-                // Staggered so the sheet prints rather than appears.
                 style={{ transitionDelay: `${index * 45}ms` }}
                 className="border-line reveal flex items-baseline gap-2.5 border-b border-dotted py-1.75"
               >

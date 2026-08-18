@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 
 const REVEAL_MARGIN = "0px 0px -15% 0px";
-// A band across the middle, so one section is current rather than every
-// section that happens to be on screen.
 const SPY_MARGIN = "-45% 0px -45% 0px";
 const COUNT_MS = 900;
 

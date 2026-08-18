@@ -40,7 +40,6 @@ try {
 
   for (const locale of locales) {
     await page.goto(`${ORIGIN}/cv/${locale}/`, { waitUntil: "networkidle" });
-    // Chrome will otherwise print whatever the fallback face rendered.
     await page.evaluate(() => document.fonts.ready);
 
     const path = `out/cv/${cvName(locale)}`;

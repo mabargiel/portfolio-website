@@ -67,8 +67,6 @@
   --default-transition-timing-function: ease;
 }
 
-/* No opacity: Chrome never counts an element that first paints transparent as
-   an LCP candidate, and above-the-fold content has to stay eligible. */
 @page {
   size: a4;
   margin: 0;
@@ -95,12 +93,6 @@
   }
 }
 
-/* Reveals are driven by IntersectionObserver rather than a view timeline.
-   Scroll-driven animations need Chrome 115, Firefox 144 or Safari 26, so on
-   anything older every section simply appeared and the page read as static.
-
-   The hidden state is scoped to .reveals, which the script adds. Without
-   JavaScript, or with reduced motion, nothing is ever hidden. */
 @theme inline {
   --font-display: var(--font-fraunces), "Georgia", serif;
   --font-body: var(--font-instrument), system-ui, sans-serif;
@@ -167,8 +159,6 @@
     translate: 0 0;
   }
 
-  /* Handled here rather than in the script, so nothing is ever hidden waiting
-     for JavaScript to decide it should not be. */
   @media (prefers-reduced-motion: reduce) {
     .reveals .reveal {
       opacity: 1;
@@ -184,9 +174,7 @@
   }
 }
 
-/* Unlayered. Tailwind's utilities sit in @layer utilities, which wins over
-   @layer base whatever the specificity, so a rule that has to override
-   text-text-2 cannot live in a layer. */
+/* Unlayered: Tailwind utilities beat @layer base at any specificity. */
 nav a.is-current {
   color: var(--color-text);
 }
