@@ -151,9 +151,27 @@ stages:
             artifact: site
             displayName: Download the export
 
+          # A variable that was never created arrives as the literal macro, so
+          # an empty check alone would pass and the failure would surface as a
+          # container exiting with no message.
+          - bash: |
+              set -euo pipefail
+              if [ -z "${TOKEN:-}" ] || [ "$TOKEN" = '$(SWA_DEPLOYMENT_TOKEN)' ]; then
+                echo "SWA_DEPLOYMENT_TOKEN is not set. Add it as a secret pipeline variable."
+                exit 1
+              fi
+              echo "Deployment token is present."
+            env:
+              TOKEN: $(SWA_DEPLOYMENT_TOKEN)
+            displayName: Check the deployment token is present
+
+          # app_location is relative to workingDirectory, and output_location
+          # must be empty when the build is skipped.
           - task: AzureStaticWebApp@0
             inputs:
-              app_location: $(Pipeline.Workspace)/site
+              workingDirectory: $(Pipeline.Workspace)/site
+              app_location: /
+              output_location: ""
               skip_app_build: true
               skip_api_build: true
               deployment_environment: staging
@@ -173,9 +191,25 @@ stages:
             artifact: site
             displayName: Download the export
 
+          # A variable that was never created arrives as the literal macro, so
+          # an empty check alone would pass and the failure would surface as a
+          # container exiting with no message.
+          - bash: |
+              set -euo pipefail
+              if [ -z "${TOKEN:-}" ] || [ "$TOKEN" = '$(SWA_DEPLOYMENT_TOKEN)' ]; then
+                echo "SWA_DEPLOYMENT_TOKEN is not set. Add it as a secret pipeline variable."
+                exit 1
+              fi
+              echo "Deployment token is present."
+            env:
+              TOKEN: $(SWA_DEPLOYMENT_TOKEN)
+            displayName: Check the deployment token is present
+
           - task: AzureStaticWebApp@0
             inputs:
-              app_location: $(Pipeline.Workspace)/site
+              workingDirectory: $(Pipeline.Workspace)/site
+              app_location: /
+              output_location: ""
               skip_app_build: true
               skip_api_build: true
               azure_static_web_apps_api_token: $(SWA_DEPLOYMENT_TOKEN)
