@@ -14,8 +14,6 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isCvLocale(locale)) return {};
 
-  // The <title> becomes the PDF's Title, which is what a reader sees in a
-  // viewer tab and what some applicant tracking systems index first.
   return {
     title: cvLabels[locale].documentTitle,
     robots: { index: false, follow: false },

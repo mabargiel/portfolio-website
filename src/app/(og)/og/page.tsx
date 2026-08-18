@@ -3,8 +3,6 @@ import { SITE_URL } from "@/site";
 const portraitMask =
   "linear-gradient(to bottom, #000 88%, transparent 100%)" as const;
 
-// scripts/render-assets.mjs sets the viewport to match. Open Graph consumers
-// crop anything far from 1.91:1.
 const WIDTH = 1200;
 const HEIGHT = 630;
 

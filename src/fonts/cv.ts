@@ -1,8 +1,7 @@
 import localFont from "next/font/local";
 
-// Whole files, not next/font/google. Google splits a family into one file per
-// unicode range, so a Polish word mixes glyphs from two files, Chrome writes a
-// text run for each, and extractors read the gap as a space: "Niezale z ny".
+// Whole files. next/font/google splits per unicode range, which breaks Polish
+// words across text runs and makes the PDF unsearchable.
 const display = localFont({
   src: "./Fraunces-500.ttf",
   weight: "500",

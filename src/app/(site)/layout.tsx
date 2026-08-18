@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageMotion } from "@/components/PageMotion";
 import { fonts } from "@/fonts/site";
 import { CF_ANALYTICS_TOKEN, SITE_URL } from "@/site";
 import "../globals.css";
@@ -31,67 +32,16 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
 };
 
-// Hides before paint, so nothing flashes in and then out. Without this script
-// the reveal class does nothing and every section is simply visible.
-const revealScript = `
-if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.documentElement.classList.add('reveals');
-  addEventListener('DOMContentLoaded', function () {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('reveal-in');
-        io.unobserve(entry.target);
-      });
-    }, { rootMargin: '0px 0px -15% 0px' });
-    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-
-    // A band across the middle of the viewport, so exactly one section is
-    // current at a time rather than every section that happens to be visible.
-    var spy = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        var link = document.querySelector('nav a[href="#' + entry.target.id + '"]');
-        if (!link) return;
-        link.classList.toggle('is-current', entry.isIntersecting);
-        if (entry.isIntersecting) { link.setAttribute('aria-current', 'true'); }
-        else { link.removeAttribute('aria-current'); }
-      });
-    }, { rootMargin: '-45% 0px -45% 0px' });
-    document.querySelectorAll('main section[id]').forEach(function (s) { spy.observe(s); });
-
-    // Values that begin with a number count up to themselves, so the datasheet
-    // reads like an instrument settling rather than a table appearing.
-    document.querySelectorAll('[data-countup]').forEach(function (el) {
-      var text = el.textContent;
-      // Escaped twice: this is a template literal, so a single backslash is
-      // eaten before the browser ever sees the regex.
-      var digits = text.match(/^\\d+/);
-      if (!digits) return;
-      var target = +digits[0];
-      var suffix = text.slice(digits[0].length);
-      var counter = new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting) return;
-        counter.disconnect();
-        var began = performance.now();
-        requestAnimationFrame(function tick(now) {
-          var progress = Math.min(1, (now - began) / 900);
-          var eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = Math.round(target * eased) + suffix;
-          if (progress < 1) requestAnimationFrame(tick);
-        });
-      });
-      counter.observe(el);
-    });
-  });
-}
-`;
+const markReveals =
+  "if(window.IntersectionObserver)document.documentElement.classList.add('reveals')";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={fonts}>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: revealScript }} />
+        <script dangerouslySetInnerHTML={{ __html: markReveals }} />
         {children}
+        <PageMotion />
         <script
           async
           type="module"
