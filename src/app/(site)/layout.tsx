@@ -45,6 +45,19 @@ if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)
       });
     }, { rootMargin: '0px 0px -15% 0px' });
     document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+
+    // A band across the middle of the viewport, so exactly one section is
+    // current at a time rather than every section that happens to be visible.
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = document.querySelector('nav a[href="#' + entry.target.id + '"]');
+        if (!link) return;
+        link.classList.toggle('is-current', entry.isIntersecting);
+        if (entry.isIntersecting) { link.setAttribute('aria-current', 'true'); }
+        else { link.removeAttribute('aria-current'); }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    document.querySelectorAll('main section[id]').forEach(function (s) { spy.observe(s); });
   });
 }
 `;

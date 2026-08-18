@@ -173,3 +173,18 @@
     cursor: pointer;
   }
 }
+
+/* Unlayered. Tailwind's utilities sit in @layer utilities, which wins over
+   @layer base whatever the specificity, so a rule that has to override
+   text-text-2 cannot live in a layer. */
+nav a.is-current {
+  color: var(--color-text);
+}
+
+nav a.is-current::after {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 2px;
+  background-color: var(--color-gold);
+}
