@@ -163,7 +163,7 @@ const diagrams = {
   bff: BackendsForFrontends,
 };
 
-export type DiagramName = keyof typeof diagrams;
+type DiagramName = keyof typeof diagrams;
 
 export function ProjectDiagram({ name }: { name: DiagramName }) {
   const Diagram = diagrams[name];

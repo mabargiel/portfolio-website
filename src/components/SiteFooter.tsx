@@ -1,5 +1,4 @@
-// Inlined at build time. A build with no tag has no version, and says so by
-// rendering the commit alone rather than a placeholder.
+// Inlined at build time, so only a tagged build can carry a version.
 const version = process.env.NEXT_PUBLIC_APP_VERSION;
 const commit = process.env.NEXT_PUBLIC_APP_COMMIT;
 
