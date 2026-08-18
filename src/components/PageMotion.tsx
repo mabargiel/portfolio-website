@@ -30,7 +30,8 @@ function markCurrentSection(): IntersectionObserver {
         );
         if (!link) continue;
         link.classList.toggle("is-current", entry.isIntersecting);
-        link.toggleAttribute("aria-current", entry.isIntersecting);
+        if (entry.isIntersecting) link.setAttribute("aria-current", "true");
+        else link.removeAttribute("aria-current");
       }
     },
     { rootMargin: SPY_MARGIN },
@@ -73,6 +74,8 @@ function countUpToWrittenValue(): IntersectionObserver {
 
 export function PageMotion() {
   useEffect(() => {
+    if (!("IntersectionObserver" in window)) return;
+
     const observers = [
       revealOnEntry(),
       markCurrentSection(),

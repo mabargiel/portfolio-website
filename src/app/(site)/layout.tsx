@@ -32,7 +32,8 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
 };
 
-const markReveals = "document.documentElement.classList.add('reveals')";
+const markReveals =
+  "if(window.IntersectionObserver)document.documentElement.classList.add('reveals')";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
