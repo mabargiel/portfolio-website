@@ -167,6 +167,16 @@
     translate: 0 0;
   }
 
+  /* Handled here rather than in the script, so nothing is ever hidden waiting
+     for JavaScript to decide it should not be. */
+  @media (prefers-reduced-motion: reduce) {
+    .reveals .reveal {
+      opacity: 1;
+      translate: none;
+      transition: none;
+    }
+  }
+
   a[href],
   summary,
   button {
