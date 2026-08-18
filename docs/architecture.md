@@ -487,6 +487,17 @@ For the same reason nothing above the fold animates from `opacity: 0`. Chrome
 never counts an element that first paints transparent as an LCP candidate, so a
 fade-in hero measures as though the headline were never painted at all.
 
+Scroll reveals are driven by `IntersectionObserver`, not by a view timeline.
+The CSS-only approach was the better idea and the wrong one: scroll-driven
+animations need Chrome 115, Firefox 144 or Safari 26, and below those the
+`@supports` guard correctly showed every section at once, so the page read as
+static to anyone not on a current browser. Roughly half a kilobyte of script
+buys an effect that works everywhere.
+
+The hidden state is scoped to a class the script adds before paint, so without
+JavaScript, or with `prefers-reduced-motion`, nothing is ever hidden. A reveal
+that leaves content invisible when its script fails is worse than no reveal.
+
 ### The build discards Next's fetch cache
 
 `npm run build` removes `.next/cache` before it runs. Content arrives through
