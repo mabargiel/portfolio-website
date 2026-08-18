@@ -34,14 +34,21 @@
 
 ## 6. Credentials. Requires Mateusz
 
-- [ ] 6.1 Read the deployment token from the portal or the CLI, without it
+- [x] 6.1 Read the deployment token from the portal or the CLI, without it
       passing through a transcript
-- [ ] 6.2 Add it as a secret pipeline variable named `SWA_DEPLOYMENT_TOKEN`
+- [x] 6.2 Add it as a secret pipeline variable named `SWA_DEPLOYMENT_TOKEN`
 
-## 7. Verify
+## 7. The studio and the content path
 
-- [ ] 7.1 A merge to `main` reaches the staging URL
-- [ ] 7.2 A tag reaches production, and the footer shows it
-- [ ] 7.3 An unknown path returns the project's 404
-- [ ] 7.4 Lighthouse and the viewport sweep against the deployed URL, not just
+- [x] 7.1 Record `studioHost` so the deploy is not an interactive prompt
+- [ ] 7.2 `sanity deploy`, once the hostname is confirmed
+- [ ] 7.3 Publish webhook, so an edit rebuilds. Deferred until the deploy path
+      is green: a webhook onto a broken pipeline proves nothing
+
+## 8. Verify
+
+- [ ] 8.1 A merge to `main` reaches the staging URL
+- [ ] 8.2 A tag reaches production, and the footer shows it
+- [ ] 8.3 An unknown path returns the project's 404
+- [ ] 8.4 Lighthouse and the viewport sweep against the deployed URL, not just
       the local preview
