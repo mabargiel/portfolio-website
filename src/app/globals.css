@@ -84,18 +84,6 @@
   }
 }
 
-@keyframes rise {
-  from {
-    opacity: 0;
-    translate: 0 24px;
-  }
-
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-
 @keyframes breathe {
   0%,
   100% {
@@ -107,26 +95,12 @@
   }
 }
 
-/* A view timeline is the only way to reveal on scroll without JavaScript. It
-   needs the @supports guard: without the timeline the element would keep the
-   0% keyframe and never appear.
+/* Reveals are driven by IntersectionObserver rather than a view timeline.
+   Scroll-driven animations need Chrome 115, Firefox 144 or Safari 26, so on
+   anything older every section simply appeared and the page read as static.
 
-   The range is a length, not a percentage of the element. Percentage ranges
-   scale with element height, so a tall card on a phone stayed half transparent
-   while it was being read, and a short heading finished before it was in view.
-   550px of scroll behaves the same for both. */
-@utility reveal {
-  @supports (animation-timeline: view()) {
-    animation: rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 550px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-}
-
+   The hidden state is scoped to .reveals, which the script adds. Without
+   JavaScript, or with reduced motion, nothing is ever hidden. */
 @theme inline {
   --font-display: var(--font-fraunces), "Georgia", serif;
   --font-body: var(--font-instrument), system-ui, sans-serif;
@@ -178,6 +152,19 @@
   img {
     display: block;
     max-width: 100%;
+  }
+
+  .reveals .reveal {
+    opacity: 0;
+    translate: 0 28px;
+    transition:
+      opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+      translate 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveals .reveal-in {
+    opacity: 1;
+    translate: 0 0;
   }
 
   a[href],

@@ -31,10 +31,29 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
 };
 
+// Hides before paint, so nothing flashes in and then out. Without this script
+// the reveal class does nothing and every section is simply visible.
+const revealScript = `
+if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.classList.add('reveals');
+  addEventListener('DOMContentLoaded', function () {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('reveal-in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -15% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  });
+}
+`;
+
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={fonts}>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: revealScript }} />
         {children}
         <script
           async
