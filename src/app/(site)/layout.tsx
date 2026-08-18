@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { fonts } from "@/fonts/site";
-import { SITE_URL } from "@/site";
+import { CF_ANALYTICS_TOKEN, SITE_URL } from "@/site";
 import "../globals.css";
 
 const title = "Mateusz Bargiel, full-stack engineer";
@@ -34,7 +34,15 @@ export const metadata: Metadata = {
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={fonts}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <script
+          async
+          type="module"
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={`{"token": "${CF_ANALYTICS_TOKEN}"}`}
+        />
+      </body>
     </html>
   );
 }
