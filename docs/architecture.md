@@ -280,6 +280,33 @@ actual conventions, the rules in `.claude/skills/`, rather than generic advice.
 be given approval rights.** Automated review that can approve its own findings
 would contradict the standard this project holds to.
 
+### The resource is described, not clicked
+
+`infra/main.bicep` describes the Static Web App: one resource, Free tier, in
+West Europe. Applying it is one command against a resource group:
+
+```
+az deployment group create --resource-group portfolio-rg --template-file infra/main.bicep
+```
+
+Bicep rather than Terraform, for now. Terraform needs a state backend, and a
+storage account with locking to track a single Free-tier resource is larger
+than the thing it tracks, and is itself infrastructure created by hand. If this
+grows a database or a CDN, that trade reverses.
+
+### What the host is told
+
+`public/staticwebapp.config.json` travels with the export. It sets a real 404
+through `responseOverrides` rather than a navigation fallback, which would
+answer unknown paths with 200 and the home page.
+
+Its `Content-Security-Policy` allows `'unsafe-inline'` for scripts and styles,
+which is not a preference. Next inlines the flight payload in six script tags,
+and the portrait carries a `style` attribute for its mask. A static export has
+no server to mint a nonce per response, so the honest options are inline-allowed
+or hashes regenerated on every build. Tightening this means moving off the
+static export, not editing the header.
+
 ### CD: staging on merge, production on tag
 
 Merging to `main` deploys to a **staging** environment. Pushing an annotated
