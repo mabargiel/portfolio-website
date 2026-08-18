@@ -47,8 +47,10 @@
 
 ## 8. Verify
 
-- [ ] 8.1 A merge to `main` reaches the staging URL
+- [x] 8.1 A merge to `main` reaches the staging URL
 - [ ] 8.2 A tag reaches production, and the footer shows it
-- [ ] 8.3 An unknown path returns the project's 404
-- [ ] 8.4 Lighthouse and the viewport sweep against the deployed URL, not just
-      the local preview
+- [x] 8.3 An unknown path returns the project's 404
+- [x] 8.4 Lighthouse and the viewport sweep against staging: performance 0.96,
+      accessibility 1.00, seven widths clean, both CVs still extracting
+- [ ] 8.5 The same against production, where SEO is measurable because the
+      environment is not sending `x-robots-tag`
