@@ -6,3 +6,6 @@ package-lock.json
 *.md
 openspec/
 src/cms/
+
+# Generated, and sanity typegen already formats it
+src/sanity/types.ts

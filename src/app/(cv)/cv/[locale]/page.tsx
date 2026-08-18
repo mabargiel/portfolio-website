@@ -2,10 +2,10 @@ import { notFound } from "next/navigation";
 import { CvSection } from "@/components/cv/CvSection";
 import {
   cvLabels,
-  isCvLocale,
-  pick,
   type CvLocale,
+  isCvLocale,
   type Localized,
+  pick,
 } from "@/cv/locale";
 import { client } from "@/sanity/client";
 import { cvQuery } from "@/sanity/queries";
