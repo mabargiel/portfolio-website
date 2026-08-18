@@ -6,31 +6,31 @@
 
 ## 2. Infrastructure
 
-- [ ] 2.1 `infra/main.bicep` describing the Static Web App, Free tier
-- [ ] 2.2 Deploy it to a resource group and record the command in `docs/`
-- [ ] 2.3 Confirm the resource is Free tier and in one region
+- [x] 2.1 `infra/main.bicep` describing the Static Web App, Free tier
+- [x] 2.2 Deploy it to a resource group and record the command in `docs/`
+- [x] 2.3 Confirm the resource is Free tier and in one region
 
 ## 3. Serving
 
-- [ ] 3.1 `staticwebapp.config.json`: 404 page, security headers, PDF content
+- [x] 3.1 `staticwebapp.config.json`: 404 page, security headers, PDF content
       type, no rewrite that would swallow unknown paths
-- [ ] 3.2 Confirm the export contains a 404 page for it to point at
+- [x] 3.2 Confirm the export contains a 404 page for it to point at
 
 ## 4. Pipeline
 
-- [ ] 4.1 Split into stages, gates unchanged in the first
-- [ ] 4.2 Publish the export as an artifact
-- [ ] 4.3 Staging stage, conditioned on `main` and a successful verification
-- [ ] 4.4 Production stage, conditioned on a `v*.*.*` tag
-- [ ] 4.5 Add the tag trigger, which the pipeline does not currently have
-- [ ] 4.6 Confirm a pull request runs the gates and deploys nothing
+- [x] 4.1 Split into stages, gates unchanged in the first
+- [x] 4.2 Publish the export as an artifact
+- [x] 4.3 Staging stage, conditioned on `main` and a successful verification
+- [x] 4.4 Production stage, conditioned on a `v*.*.*` tag
+- [x] 4.5 Add the tag trigger, which the pipeline does not currently have
+- [x] 4.6 Confirm a pull request runs the gates and deploys nothing
 
 ## 5. Version on the footer
 
-- [ ] 5.1 Pass the tag into the build as `NEXT_PUBLIC_APP_VERSION`
-- [ ] 5.2 Pass the short commit in the same way
-- [ ] 5.3 Footer renders both, or the commit alone when there is no tag
-- [ ] 5.4 Confirm the application JS figure is unchanged
+- [x] 5.1 Pass the tag into the build as `NEXT_PUBLIC_APP_VERSION`
+- [x] 5.2 Pass the short commit in the same way
+- [x] 5.3 Footer renders both, or the commit alone when there is no tag
+- [x] 5.4 Confirm the application JS figure is unchanged
 
 ## 6. Credentials. Requires Mateusz
 

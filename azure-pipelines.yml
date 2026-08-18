@@ -1,5 +1,10 @@
 trigger:
-  - main
+  branches:
+    include:
+      - main
+  tags:
+    include:
+      - v*
 
 pr:
   - main
@@ -13,92 +18,165 @@ variables:
   SANITY_PROJECT_ID: afeko6yc
   SANITY_DATASET: production
 
-steps:
-  # Shallower than this and the commit message range check has no range.
-  - checkout: self
-    fetchDepth: 0
-    displayName: Checkout
+stages:
+  - stage: Verify
+    displayName: Verify
+    jobs:
+      - job: Verify
+        steps:
+          # Shallower than this and the commit message range check has no range.
+          - checkout: self
+            fetchDepth: 0
+            displayName: Checkout
 
-  - bash: |
-      set -euo pipefail
-      version=$(tr -d '[:space:]' < .nvmrc)
-      echo "Node version from .nvmrc: $version"
-      echo "##vso[task.setvariable variable=nodeVersion]$version"
-    displayName: Resolve Node version from .nvmrc
+          - bash: |
+              set -euo pipefail
+              version=$(tr -d '[:space:]' < .nvmrc)
+              echo "Node version from .nvmrc: $version"
+              echo "##vso[task.setvariable variable=nodeVersion]$version"
+            displayName: Resolve Node version from .nvmrc
 
-  - task: UseNode@1
-    inputs:
-      version: $(nodeVersion)
-    displayName: Install Node $(nodeVersion)
+          - task: UseNode@1
+            inputs:
+              version: $(nodeVersion)
+            displayName: Install Node $(nodeVersion)
 
-  - bash: |
-      set -euo pipefail
-      node --version
-      npm --version
-    displayName: Print Node and npm versions
+          - bash: |
+              set -euo pipefail
+              node --version
+              npm --version
+            displayName: Print Node and npm versions
 
-  - bash: npm ci
-    displayName: Install dependencies
+          - bash: npm ci
+            displayName: Install dependencies
 
-  - bash: npm run typecheck
-    displayName: Check types
+          - bash: npm run typecheck
+            displayName: Check types
 
-  - bash: npm run lint
-    displayName: Lint TypeScript
+          - bash: npm run lint
+            displayName: Lint TypeScript
 
-  - bash: npm run lint:css
-    displayName: Lint CSS
+          - bash: npm run lint:css
+            displayName: Lint CSS
 
-  - bash: npm run format:check
-    displayName: Check formatting
+          - bash: npm run format:check
+            displayName: Check formatting
 
-  - bash: npx playwright install --with-deps chromium
-    displayName: Install Chromium
+          - bash: npx playwright install --with-deps chromium
+            displayName: Install Chromium
 
-  - bash: npm run build
-    displayName: Build the static export and the CV PDFs
+          - bash: |
+              set -euo pipefail
+              # Only a tag names a version. Everything else reports the commit
+              # alone rather than inventing one.
+              if [[ "$(Build.SourceBranch)" == refs/tags/v* ]]; then
+                echo "##vso[task.setvariable variable=appVersion]$(Build.SourceBranchName)"
+              else
+                echo "##vso[task.setvariable variable=appVersion]"
+              fi
+              echo "##vso[task.setvariable variable=appCommit]${COMMIT:0:7}"
+            env:
+              COMMIT: $(Build.SourceVersion)
+            displayName: Resolve the build identity
 
-  - bash: |
-      set -euo pipefail
-      # System.PullRequest.SourceBranch is a full ref; the script wants a name.
-      branch="${SOURCE_BRANCH#refs/heads/}"
-      echo "Source branch: $branch"
-      scripts/check-branch-name.sh "$branch"
-    env:
-      SOURCE_BRANCH: $(System.PullRequest.SourceBranch)
-    condition: eq(variables['Build.Reason'], 'PullRequest')
-    displayName: Check the branch name
+          - bash: npm run build
+            env:
+              NEXT_PUBLIC_APP_VERSION: $(appVersion)
+              NEXT_PUBLIC_APP_COMMIT: $(appCommit)
+            displayName: Build the static export and the CV PDFs
 
-  - bash: |
-      set -euo pipefail
-      target="${TARGET_BRANCH#refs/heads/}"
-      git fetch --no-tags origin "$target"
-      scripts/check-commit-range.sh "origin/$target" HEAD
-    env:
-      TARGET_BRANCH: $(System.PullRequest.TargetBranch)
-    condition: eq(variables['Build.Reason'], 'PullRequest')
-    displayName: Check the commit messages
+          - bash: |
+              set -euo pipefail
+              # System.PullRequest.SourceBranch is a full ref; the script wants a name.
+              branch="${SOURCE_BRANCH#refs/heads/}"
+              echo "Source branch: $branch"
+              scripts/check-branch-name.sh "$branch"
+            env:
+              SOURCE_BRANCH: $(System.PullRequest.SourceBranch)
+            condition: eq(variables['Build.Reason'], 'PullRequest')
+            displayName: Check the branch name
 
-  - bash: npm run check:bundle
-    displayName: Check application JS size
+          - bash: |
+              set -euo pipefail
+              target="${TARGET_BRANCH#refs/heads/}"
+              git fetch --no-tags origin "$target"
+              scripts/check-commit-range.sh "origin/$target" HEAD
+            env:
+              TARGET_BRANCH: $(System.PullRequest.TargetBranch)
+            condition: eq(variables['Build.Reason'], 'PullRequest')
+            displayName: Check the commit messages
 
-  - bash: |
-      set -euo pipefail
-      npm run preview > "$(Agent.TempDirectory)/preview.log" 2>&1 &
-      curl -s --retry 30 --retry-connrefused --retry-delay 1 -o /dev/null http://localhost:4173/
-      echo "Preview server is serving out/ on 4173."
-    displayName: Serve the export on 4173
+          - bash: npm run check:bundle
+            displayName: Check application JS size
 
-  - bash: npm run check:viewport
-    displayName: Check for horizontal overflow
+          - bash: |
+              set -euo pipefail
+              npm run preview > "$(Agent.TempDirectory)/preview.log" 2>&1 &
+              curl -s --retry 30 --retry-connrefused --retry-delay 1 -o /dev/null http://localhost:4173/
+              echo "Preview server is serving out/ on 4173."
+            displayName: Serve the export on 4173
 
-  - bash: npm run check:lighthouse
-    displayName: Check Lighthouse scores
+          - bash: npm run check:viewport
+            displayName: Check for horizontal overflow
 
-  - task: PublishPipelineArtifact@1
-    condition: always()
-    continueOnError: true
-    inputs:
-      targetPath: .lighthouseci
-      artifact: lighthouse
-    displayName: Keep the Lighthouse reports
+          - bash: npm run check:lighthouse
+            displayName: Check Lighthouse scores
+
+          - task: PublishPipelineArtifact@1
+            condition: always()
+            continueOnError: true
+            inputs:
+              targetPath: .lighthouseci
+              artifact: lighthouse
+            displayName: Keep the Lighthouse reports
+
+          # What the deploy stages publish. They never build, so what shipped is
+          # what these gates ran against.
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: out
+              artifact: site
+            displayName: Publish the export
+
+  - stage: Staging
+    displayName: Deploy to staging
+    dependsOn: Verify
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: Staging
+        steps:
+          - checkout: none
+
+          - download: current
+            artifact: site
+            displayName: Download the export
+
+          - task: AzureStaticWebApp@0
+            inputs:
+              app_location: $(Pipeline.Workspace)/site
+              skip_app_build: true
+              skip_api_build: true
+              deployment_environment: staging
+              azure_static_web_apps_api_token: $(SWA_DEPLOYMENT_TOKEN)
+            displayName: Publish to the staging environment
+
+  - stage: Production
+    displayName: Deploy to production
+    dependsOn: Verify
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+    jobs:
+      - job: Production
+        steps:
+          - checkout: none
+
+          - download: current
+            artifact: site
+            displayName: Download the export
+
+          - task: AzureStaticWebApp@0
+            inputs:
+              app_location: $(Pipeline.Workspace)/site
+              skip_app_build: true
+              skip_api_build: true
+              azure_static_web_apps_api_token: $(SWA_DEPLOYMENT_TOKEN)
+            displayName: Publish to production
