@@ -77,7 +77,7 @@ export function ProjectCase({
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gold hover:border-gold border-b border-transparent"
+                className="text-gold hover:border-gold inline-block border-b border-transparent py-1"
               >
                 {link.label}
               </a>
