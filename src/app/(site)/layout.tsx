@@ -58,6 +58,30 @@ if (window.IntersectionObserver && !matchMedia('(prefers-reduced-motion: reduce)
       });
     }, { rootMargin: '-45% 0px -45% 0px' });
     document.querySelectorAll('main section[id]').forEach(function (s) { spy.observe(s); });
+
+    // Values that begin with a number count up to themselves, so the datasheet
+    // reads like an instrument settling rather than a table appearing.
+    document.querySelectorAll('[data-countup]').forEach(function (el) {
+      var text = el.textContent;
+      // Escaped twice: this is a template literal, so a single backslash is
+      // eaten before the browser ever sees the regex.
+      var digits = text.match(/^\\d+/);
+      if (!digits) return;
+      var target = +digits[0];
+      var suffix = text.slice(digits[0].length);
+      var counter = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        counter.disconnect();
+        var began = performance.now();
+        requestAnimationFrame(function tick(now) {
+          var progress = Math.min(1, (now - began) / 900);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if (progress < 1) requestAnimationFrame(tick);
+        });
+      });
+      counter.observe(el);
+    });
   });
 }
 `;

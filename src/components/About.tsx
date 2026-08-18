@@ -86,17 +86,24 @@ export function About() {
             Datasheet
           </h3>
           <dl>
-            {datasheet.map(({ term, value, tone }) => (
+            {datasheet.map(({ term, value, tone }, index) => (
               <div
                 key={term}
-                className="border-line flex items-baseline gap-2.5 border-b border-dotted py-1.75"
+                // Staggered so the sheet prints rather than appears.
+                style={{ transitionDelay: `${index * 45}ms` }}
+                className="border-line reveal flex items-baseline gap-2.5 border-b border-dotted py-1.75"
               >
                 <dt className="text-text-3 whitespace-nowrap">{term}</dt>
                 <span
                   aria-hidden="true"
                   className="border-line flex-1 -translate-y-1 border-b border-dotted"
                 />
-                <dd className={tone ? tones[tone] : "text-text"}>{value}</dd>
+                <dd
+                  data-countup={/^\d/.test(value) ? "" : undefined}
+                  className={tone ? tones[tone] : "text-text"}
+                >
+                  {value}
+                </dd>
               </div>
             ))}
           </dl>
