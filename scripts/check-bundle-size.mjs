@@ -18,12 +18,36 @@ if (sources.length === 0) {
   process.exit(1);
 }
 
-const scripts = sources
-  .map((src) => ({
-    src,
-    bytes: gzipSync(readFileSync(join(OUT, src)), { level: 9 }).length,
-  }))
-  .sort((a, b) => b.bytes - a.bytes);
+// A script the page loads counts against the budget whether or not we host it.
+// Reading a CDN URL off disk throws ENOENT, so third-party sources are fetched
+// and compressed the same way local ones are.
+async function measure(src) {
+  if (!/^https?:\/\//.test(src)) {
+    return {
+      src,
+      bytes: gzipSync(readFileSync(join(OUT, src)), { level: 9 }).length,
+    };
+  }
+  const response = await fetch(src, { signal: AbortSignal.timeout(15000) });
+  if (!response.ok) {
+    throw new Error(`${src} responded ${response.status}`);
+  }
+  const body = Buffer.from(await response.arrayBuffer());
+  return { src, bytes: gzipSync(body, { level: 9 }).length, thirdParty: true };
+}
+
+let scripts;
+try {
+  scripts = (await Promise.all(sources.map(measure))).sort(
+    (a, b) => b.bytes - a.bytes,
+  );
+} catch (error) {
+  console.error(`Could not measure a script: ${error.message}`);
+  console.error(
+    "A script that cannot be measured is not a script under budget.",
+  );
+  process.exit(1);
+}
 
 const kb = (bytes) => bytes / 1024;
 const total = kb(scripts.reduce((sum, s) => sum + s.bytes, 0));
@@ -32,7 +56,9 @@ const application = total - baseline;
 const budget = budgets.applicationJsKb;
 
 for (const s of scripts) {
-  console.log(`  ${kb(s.bytes).toFixed(1).padStart(7)} kB  ${s.src}`);
+  console.log(
+    `  ${kb(s.bytes).toFixed(1).padStart(7)} kB  ${s.src}${s.thirdParty ? "  third party" : ""}`,
+  );
 }
 
 console.log("");

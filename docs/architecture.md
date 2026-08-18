@@ -389,6 +389,35 @@ A publish webhook from Sanity triggers the pipeline so content edits reach the
 site. Content-only rebuilds deploy from the current release tag; they do not
 create a new version.
 
+## Measurement
+
+Cloudflare Web Analytics, which is the site's only third-party runtime
+dependency and the only exception to the rule that produced self-hosted fonts.
+It costs 11 kB gzipped, cookieless, and needs no consent banner because it
+stores nothing personal.
+
+Azure has the equivalent in Application Insights, which would have suited a
+site built on Azure. Its current browser SDK is 72 kB gzipped, above the whole
+application budget on its own, for the same three answers. The Azure-native
+option was measured and rejected on weight rather than assumed.
+
+Azure Monitor still answers the server-side half for free and with no
+JavaScript: `SiteHits`, `BytesSent` and the CDN counters are on the resource
+already, and `StaticSiteHttpLogs` can be routed to Log Analytics for per-path
+detail. What it cannot produce is field Core Web Vitals, which only exist in a
+browser. That is the whole reason a beacon is here at all.
+
+The two will disagree. `SiteHits` counts every asset request including bots and
+synthetic runs; the beacon counts sessions where it executed. The beacon is the
+closer measure of people.
+
+### The budget counts what the page loads
+
+`scripts/check-bundle-size.mjs` fetches third-party scripts and compresses them
+the same way it compresses local ones. Before that it read every `src` off
+disk, so a CDN URL crashed it with `ENOENT`. A budget that only measures
+JavaScript you happen to host is not measuring the thing it claims to.
+
 ## Findability
 
 The site is one page, so search work is mostly about how it appears elsewhere.
