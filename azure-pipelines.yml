@@ -152,15 +152,20 @@ stages:
             displayName: Download the export
 
           # A variable that was never created arrives as the literal macro, so
-          # an empty check alone would pass and the failure would surface as a
-          # container exiting with no message.
+          # emptiness alone does not detect it. The macro cannot be written out
+          # here to compare against: Azure expands it in the script body first,
+          # quotes included, and the check then matches a token that is present.
+          # Leading dollar is the shape of the unexpanded macro and of nothing
+          # a real token starts with.
           - bash: |
               set -euo pipefail
-              if [ -z "${TOKEN:-}" ] || [ "$TOKEN" = '$(SWA_DEPLOYMENT_TOKEN)' ]; then
-                echo "SWA_DEPLOYMENT_TOKEN is not set. Add it as a secret pipeline variable."
-                exit 1
-              fi
-              echo "Deployment token is present."
+              case "${TOKEN:-}" in
+                "" | '$'*)
+                  echo "SWA_DEPLOYMENT_TOKEN is not set. Add it as a secret pipeline variable."
+                  exit 1
+                  ;;
+              esac
+              echo "Deployment token is present, ${#TOKEN} characters."
             env:
               TOKEN: $(SWA_DEPLOYMENT_TOKEN)
             displayName: Check the deployment token is present
@@ -192,15 +197,20 @@ stages:
             displayName: Download the export
 
           # A variable that was never created arrives as the literal macro, so
-          # an empty check alone would pass and the failure would surface as a
-          # container exiting with no message.
+          # emptiness alone does not detect it. The macro cannot be written out
+          # here to compare against: Azure expands it in the script body first,
+          # quotes included, and the check then matches a token that is present.
+          # Leading dollar is the shape of the unexpanded macro and of nothing
+          # a real token starts with.
           - bash: |
               set -euo pipefail
-              if [ -z "${TOKEN:-}" ] || [ "$TOKEN" = '$(SWA_DEPLOYMENT_TOKEN)' ]; then
-                echo "SWA_DEPLOYMENT_TOKEN is not set. Add it as a secret pipeline variable."
-                exit 1
-              fi
-              echo "Deployment token is present."
+              case "${TOKEN:-}" in
+                "" | '$'*)
+                  echo "SWA_DEPLOYMENT_TOKEN is not set. Add it as a secret pipeline variable."
+                  exit 1
+                  ;;
+              esac
+              echo "Deployment token is present, ${#TOKEN} characters."
             env:
               TOKEN: $(SWA_DEPLOYMENT_TOKEN)
             displayName: Check the deployment token is present
