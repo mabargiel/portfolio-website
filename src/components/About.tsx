@@ -46,6 +46,10 @@ export function About() {
             the best possible way.
           </p>
           <p>
+            Informatics at AGH in Krakow, though most of what I use daily I
+            learned shipping it.
+          </p>
+          <p>
             I use AI tooling aggressively and on purpose. It compresses the
             mechanical work by an order of magnitude, so{" "}
             <strong className="text-text font-medium">
