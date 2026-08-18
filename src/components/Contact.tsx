@@ -21,7 +21,7 @@ export function Contact() {
         <li>
           <a
             href={GITHUB_URL}
-            className="text-text-2 hover:text-gold transition-colors"
+            className="text-text-2 hover:text-gold inline-block py-1.5 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -31,7 +31,7 @@ export function Contact() {
         <li>
           <a
             href={LINKEDIN_URL}
-            className="text-text-2 hover:text-gold transition-colors"
+            className="text-text-2 hover:text-gold inline-block py-1.5 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
