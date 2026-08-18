@@ -335,6 +335,13 @@ production, so a single long-lived `staging` fits comfortably.
 pre-production environment, even when the repository is private. Treat anything
 deployed there as published.
 
+It is, however, not indexed. Static Web Apps sends `x-robots-tag: none` on
+pre-production environments automatically. Lighthouse reads that as the page
+being blocked from indexing and scores SEO around 0.69 there, against 1.00 on
+the same commit locally. That number is the environment behaving correctly, not
+a defect, and it is the reason to run the SEO check against production rather
+than against staging.
+
 ### Version on the footer
 
 The tag name is injected at build time and rendered in the footer, alongside the
