@@ -389,6 +389,18 @@ A publish webhook from Sanity triggers the pipeline so content edits reach the
 site. Content-only rebuilds deploy from the current release tag; they do not
 create a new version.
 
+Sanity posts to an incoming webhook service connection named `sanityPublish`,
+which the pipeline declares under `resources.webhooks`. A run started that way
+begins on the default branch, so Verify checks out the most recent `v*` tag
+before building and reports that tag as the version. Staging is excluded from
+these runs, because staging tracks `main`.
+
+Two steps live outside the repository: the `sanityPublish` service connection in
+Azure DevOps project settings, and a webhook in Sanity manage filtered to
+published `project`, `experience` and `cv` documents. Sanity signs requests with
+its own header, so whether the connection's secret checksum accepts that
+signature has to be confirmed when wiring it rather than assumed.
+
 ## Measurement
 
 Cloudflare Web Analytics, which is the site's only third-party runtime
