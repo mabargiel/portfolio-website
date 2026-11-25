@@ -65,6 +65,7 @@ export type Experience = {
   _rev: string;
   role: LocaleString;
   org: string;
+  engagement: "contract" | "independent";
   dateLabel: LocaleString;
   current?: boolean;
   description: LocaleText;
@@ -302,7 +303,7 @@ export type ProjectsQueryResult = Array<{
 
 // Source: ../sanity/queries.ts
 // Variable: experienceQuery
-// Query: *[_type == "experience"] | order(order asc) {    _id,    role{ en, pl },    org,    dateLabel{ en, pl },    current,    description{ en, pl }  }
+// Query: *[_type == "experience"] | order(order asc) {    _id,    role{ en, pl },    org,    engagement,    dateLabel{ en, pl },    current,    description{ en, pl }  }
 export type ExperienceQueryResult = Array<{
   _id: string;
   role: {
@@ -310,6 +311,7 @@ export type ExperienceQueryResult = Array<{
     pl: string | null;
   };
   org: string;
+  engagement: "contract" | "independent";
   dateLabel: {
     en: string;
     pl: string | null;
@@ -418,7 +420,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '\n  *[_type == "project"] | order(order asc) {\n    _id,\n    title{ en, pl },\n    kind{ en, pl },\n    client,\n    period{ en, pl },\n    current,\n    description{ en, pl },\n    outcome{ en, pl },\n    stack,\n    links[]{ label, url },\n    diagram,\n    images[]{ alt{ en, pl }, asset->{ _id } }\n  }\n': ProjectsQueryResult;
-    '\n  *[_type == "experience"] | order(order asc) {\n    _id,\n    role{ en, pl },\n    org,\n    dateLabel{ en, pl },\n    current,\n    description{ en, pl }\n  }\n': ExperienceQueryResult;
+    '\n  *[_type == "experience"] | order(order asc) {\n    _id,\n    role{ en, pl },\n    org,\n    engagement,\n    dateLabel{ en, pl },\n    current,\n    description{ en, pl }\n  }\n': ExperienceQueryResult;
     '\n  {\n    "profile": *[_type == "cv"][0]{\n      headline{ en, pl },\n      location{ en, pl },\n      summary{ en, pl },\n      skills[]{ category{ en, pl }, items },\n      education[]{ qualification{ en, pl }, school, period },\n      languages[]{ name{ en, pl }, level{ en, pl } }\n    },\n    "roles": *[_type == "experience"] | order(order asc) {\n      _id,\n      role{ en, pl },\n      org,\n      location,\n      current,\n      dateLabel{ en, pl },\n      description{ en, pl },\n      bullets[]{ en, pl }\n    },\n    "projects": *[_type == "project" && onCv == true] | order(order asc) {\n      _id,\n      title{ en, pl },\n      kind{ en, pl },\n      client,\n      period{ en, pl },\n      outcome{ en, pl },\n      stack,\n      links[]{ label, url }\n    }\n  }\n': CvQueryResult;
   }
 }

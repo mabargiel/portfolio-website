@@ -24,6 +24,7 @@ export const experienceQuery = defineQuery(`
     _id,
     role${localized},
     org,
+    engagement,
     dateLabel${localized},
     current,
     description${localized}
