@@ -25,10 +25,6 @@ variables:
   # A variable that was never created arrives as the literal macro, which the
   # identity step would read as a version. Declared empty so it never can.
   releaseTag: ""
-  # An incoming webhook run reports Build.Reason as Manual, not ResourceTrigger,
-  # so the only thing separating it from a person queueing a build is the
-  # service identity it is requested for.
-  contentRebuild: $[ and(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.RequestedFor'], 'Microsoft.VisualStudio.Services.TFS')) ]
 
 stages:
   - stage: Verify
@@ -41,14 +37,16 @@ stages:
             fetchDepth: 0
             displayName: Checkout
 
-          # A webhook run starts on the default branch, so a content rebuild
-          # would otherwise ship whatever is unreleased on main.
+          # A webhook run arrives as a Manual run of the default branch and
+          # reports neither ResourceTrigger nor a distinguishing requester, so
+          # every Manual run of main rebuilds the current release instead of
+          # shipping whatever is unreleased there.
           - bash: |
               set -euo pipefail
               tag=$(git describe --tags --abbrev=0 --match 'v*')
               git switch --detach "refs/tags/$tag"
               echo "##vso[task.setvariable variable=releaseTag]$tag"
-            condition: eq(variables['contentRebuild'], 'True')
+            condition: and(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
             displayName: Check out the current release
 
           - bash: |
@@ -169,7 +167,7 @@ stages:
   - stage: Staging
     displayName: Deploy to staging
     dependsOn: Verify
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['contentRebuild'], 'True'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.Reason'], 'Manual'))
     jobs:
       - job: Staging
         steps:
@@ -214,7 +212,7 @@ stages:
   - stage: Production
     displayName: Deploy to production
     dependsOn: Verify
-    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), eq(variables['contentRebuild'], 'True')))
+    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), and(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))))
     jobs:
       - job: Production
         steps:
