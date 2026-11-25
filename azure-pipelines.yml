@@ -37,16 +37,17 @@ stages:
             fetchDepth: 0
             displayName: Checkout
 
-          # A webhook run arrives as a Manual run of the default branch and
-          # reports neither ResourceTrigger nor a distinguishing requester, so
-          # every Manual run of main rebuilds the current release instead of
-          # shipping whatever is unreleased there.
+          # A webhook run arrives on the default branch under a Build.Reason
+          # that is neither ResourceTrigger nor Manual, whatever the REST API
+          # reports, so it is selected by excluding the two reasons that are
+          # observable instead. Without this it would ship whatever is
+          # unreleased on main.
           - bash: |
               set -euo pipefail
               tag=$(git describe --tags --abbrev=0 --match 'v*')
               git switch --detach "refs/tags/$tag"
               echo "##vso[task.setvariable variable=releaseTag]$tag"
-            condition: and(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+            condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.Reason'], 'IndividualCI'), ne(variables['Build.Reason'], 'PullRequest'))
             displayName: Check out the current release
 
           - bash: |
@@ -99,6 +100,7 @@ stages:
               # Build.SourceVersion is the commit the run started on, which is
               # not the one a release checkout leaves behind.
               commit=$(git rev-parse HEAD)
+              echo "Build.Reason: $(Build.Reason)"
               echo "##vso[task.setvariable variable=appVersion]$version"
               echo "##vso[task.setvariable variable=appCommit]${commit:0:7}"
             env:
@@ -167,7 +169,7 @@ stages:
   - stage: Staging
     displayName: Deploy to staging
     dependsOn: Verify
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.Reason'], 'Manual'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'IndividualCI'))
     jobs:
       - job: Staging
         steps:
@@ -212,7 +214,7 @@ stages:
   - stage: Production
     displayName: Deploy to production
     dependsOn: Verify
-    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), and(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))))
+    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), and(eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.Reason'], 'IndividualCI'), ne(variables['Build.Reason'], 'PullRequest'))))
     jobs:
       - job: Production
         steps:
