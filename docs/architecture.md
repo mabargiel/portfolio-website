@@ -395,6 +395,11 @@ begins on the default branch, so Verify checks out the most recent `v*` tag
 before building and reports that tag as the version. Staging is excluded from
 these runs, because staging tracks `main`.
 
+Such a run reports `Build.Reason` as `Manual`, not `ResourceTrigger`, and names
+the TFS service identity in `Build.RequestedFor`. That pair is what the
+`contentRebuild` variable tests, because the trigger is otherwise
+indistinguishable from a person queueing a build by hand.
+
 Two steps live outside the repository: the `sanityPublish` service connection in
 Azure DevOps project settings, and a webhook in Sanity manage filtered to
 published `project`, `experience` and `cv` documents. Sanity signs requests with

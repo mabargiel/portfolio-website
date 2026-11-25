@@ -25,6 +25,10 @@ variables:
   # A variable that was never created arrives as the literal macro, which the
   # identity step would read as a version. Declared empty so it never can.
   releaseTag: ""
+  # An incoming webhook run reports Build.Reason as Manual, not ResourceTrigger,
+  # so the only thing separating it from a person queueing a build is the
+  # service identity it is requested for.
+  contentRebuild: $[ and(eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.RequestedFor'], 'Microsoft.VisualStudio.Services.TFS')) ]
 
 stages:
   - stage: Verify
@@ -44,7 +48,7 @@ stages:
               tag=$(git describe --tags --abbrev=0 --match 'v*')
               git switch --detach "refs/tags/$tag"
               echo "##vso[task.setvariable variable=releaseTag]$tag"
-            condition: eq(variables['Build.Reason'], 'ResourceTrigger')
+            condition: eq(variables['contentRebuild'], 'True')
             displayName: Check out the current release
 
           - bash: |
@@ -165,7 +169,7 @@ stages:
   - stage: Staging
     displayName: Deploy to staging
     dependsOn: Verify
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.Reason'], 'ResourceTrigger'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['contentRebuild'], 'True'))
     jobs:
       - job: Staging
         steps:
@@ -210,7 +214,7 @@ stages:
   - stage: Production
     displayName: Deploy to production
     dependsOn: Verify
-    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), eq(variables['Build.Reason'], 'ResourceTrigger')))
+    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), eq(variables['contentRebuild'], 'True')))
     jobs:
       - job: Production
         steps:
