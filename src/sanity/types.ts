@@ -135,6 +135,44 @@ export type SanityImageHotspot = {
   width: number;
 };
 
+export type SanityReleaseMetadata = {
+  _type: "sanity.releaseMetadata";
+  title?: string;
+  description?: string;
+  releaseType: "asap" | "scheduled" | "undecided";
+  intendedPublishAt?: string;
+  cardinality?: "many" | "one";
+};
+
+export type SystemRelease = {
+  _id: string;
+  _type: "system.release";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  state?:
+    | "active"
+    | "archiving"
+    | "unarchiving"
+    | "archived"
+    | "published"
+    | "publishing"
+    | "scheduled"
+    | "scheduling";
+  error?: {
+    message?: string;
+  };
+  publishAt?: string;
+  publishedAt?: string;
+  metadata?: SanityReleaseMetadata;
+  finalDocumentStates?: Array<{
+    id?: string;
+    _key: string;
+  }>;
+  userId?: string;
+};
+
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -247,6 +285,8 @@ export type AllSanitySchemaTypes =
   | Project
   | SanityImageCrop
   | SanityImageHotspot
+  | SanityReleaseMetadata
+  | SystemRelease
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -416,11 +456,14 @@ export type CvQueryResult = {
 };
 
 // Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
+declare global {
   interface SanityQueries {
     '\n  *[_type == "project"] | order(order asc) {\n    _id,\n    title{ en, pl },\n    kind{ en, pl },\n    client,\n    period{ en, pl },\n    current,\n    description{ en, pl },\n    outcome{ en, pl },\n    stack,\n    links[]{ label, url },\n    diagram,\n    images[]{ alt{ en, pl }, asset->{ _id } }\n  }\n': ProjectsQueryResult;
     '\n  *[_type == "experience"] | order(order asc) {\n    _id,\n    role{ en, pl },\n    org,\n    engagement,\n    dateLabel{ en, pl },\n    current,\n    description{ en, pl }\n  }\n': ExperienceQueryResult;
     '\n  {\n    "profile": *[_type == "cv"][0]{\n      headline{ en, pl },\n      location{ en, pl },\n      summary{ en, pl },\n      skills[]{ category{ en, pl }, items },\n      education[]{ qualification{ en, pl }, school, period },\n      languages[]{ name{ en, pl }, level{ en, pl } }\n    },\n    "roles": *[_type == "experience"] | order(order asc) {\n      _id,\n      role{ en, pl },\n      org,\n      location,\n      current,\n      dateLabel{ en, pl },\n      description{ en, pl },\n      bullets[]{ en, pl }\n    },\n    "projects": *[_type == "project" && onCv == true] | order(order asc) {\n      _id,\n      title{ en, pl },\n      kind{ en, pl },\n      client,\n      period{ en, pl },\n      outcome{ en, pl },\n      stack,\n      links[]{ label, url }\n    }\n  }\n': CvQueryResult;
   }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
 }

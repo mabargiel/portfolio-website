@@ -14,6 +14,15 @@ const eslintConfig = defineConfig([
       "@next/next/no-img-element": "off",
     },
   },
+  {
+    files: ["src/sanity/types.ts"],
+    rules: {
+      // Sanity TypeGen emits an empty interface to merge into @sanity/client
+      // releases that predate the global registry, and rewrites the file on
+      // every generate, so the shape cannot be fixed in place.
+      "@typescript-eslint/no-empty-object-type": "off",
+    },
+  },
   globalIgnores([
     ".next/**",
     "out/**",

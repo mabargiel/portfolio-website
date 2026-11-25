@@ -10,6 +10,7 @@ export default defineCliConfig({
   // answered at a prompt.
   studioHost: 'mbargiel-portfolio',
   deployment: {
+    appId: 'wxajhuz3q8pp9q779l1r5svy',
     /**
      * Enable auto-updates for studios.
      * Learn more at https://www.sanity.io/docs/studio/latest-version-of-sanity#k47faf43faf56
