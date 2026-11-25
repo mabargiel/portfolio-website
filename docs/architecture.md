@@ -395,10 +395,12 @@ begins on the default branch, so Verify checks out the most recent `v*` tag
 before building and reports that tag as the version. Staging is excluded from
 these runs, because staging tracks `main`.
 
-Such a run reports `Build.Reason` as `Manual`, not `ResourceTrigger`, and names
-the TFS service identity in `Build.RequestedFor`. That pair is what the
-`contentRebuild` variable tests, because the trigger is otherwise
-indistinguishable from a person queueing a build by hand.
+Such a run reports `Build.Reason` as `Manual`, not `ResourceTrigger`, and
+nothing in the run's variables separates it from a person queueing a build by
+hand. The rule is therefore the broader one it implies: **a `Manual` run of
+`main` rebuilds the current release.** Queueing `main` by hand deploys the
+release to production rather than `main` to staging; push to `main` for a
+staging build.
 
 Two steps live outside the repository: the `sanityPublish` service connection in
 Azure DevOps project settings, and a webhook in Sanity manage filtered to
