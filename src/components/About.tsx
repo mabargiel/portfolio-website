@@ -14,7 +14,7 @@ const datasheet: Row[] = [
   { term: "frontend", value: "React / TypeScript" },
   { term: "cloud", value: "Azure" },
   { term: "ops", value: "Terraform, K8s, ADO" },
-  { term: "delivery", value: "ai-accelerated, ~10x", tone: "gold" },
+  { term: "delivery", value: "gates block the merge", tone: "gold" },
   { term: "code review", value: "always human, no exceptions", tone: "ok" },
   { term: "timezone", value: "CET, UTC+1" },
   { term: "status", value: "open to contracts", tone: "ok" },
@@ -50,8 +50,8 @@ export function About() {
             learned shipping it.
           </p>
           <p>
-            I use AI tooling aggressively and on purpose. It compresses the
-            mechanical work by an order of magnitude, so{" "}
+            I use AI tooling aggressively and on purpose. It takes the
+            mechanical work, so{" "}
             <strong className="text-text font-medium">
               your budget buys architecture, review and edge cases
             </strong>{" "}

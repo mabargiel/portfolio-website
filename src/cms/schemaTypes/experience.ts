@@ -16,6 +16,21 @@ export const experience = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'engagement',
+      title: 'Engagement type',
+      type: 'string',
+      description:
+        'Which list the entry appears under. Contract covers work someone else engaged you for; independent covers your own practice and anything run alongside it',
+      options: {
+        list: [
+          {title: 'Contract', value: 'contract'},
+          {title: 'Independent', value: 'independent'},
+        ],
+        layout: 'radio',
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'dateLabel',
       type: 'localeString',
       description: 'Shown as written, for example "Sep 2025 - now". Engagements overlap, so this is not a date range',

@@ -316,6 +316,23 @@
         },
         "optional": false
       },
+      "engagement": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "contract"
+            },
+            {
+              "type": "string",
+              "value": "independent"
+            }
+          ]
+        },
+        "optional": false
+      },
       "dateLabel": {
         "type": "objectAttribute",
         "value": {

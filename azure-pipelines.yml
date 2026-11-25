@@ -9,6 +9,11 @@ trigger:
 pr:
   - main
 
+resources:
+  webhooks:
+    - webhook: sanityPublish
+      connection: sanityPublish
+
 pool:
   vmImage: ubuntu-latest
 
@@ -17,6 +22,9 @@ pool:
 variables:
   SANITY_PROJECT_ID: afeko6yc
   SANITY_DATASET: production
+  # A variable that was never created arrives as the literal macro, which the
+  # identity step would read as a version. Declared empty so it never can.
+  releaseTag: ""
 
 stages:
   - stage: Verify
@@ -28,6 +36,16 @@ stages:
           - checkout: self
             fetchDepth: 0
             displayName: Checkout
+
+          # A webhook run starts on the default branch, so a content rebuild
+          # would otherwise ship whatever is unreleased on main.
+          - bash: |
+              set -euo pipefail
+              tag=$(git describe --tags --abbrev=0 --match 'v*')
+              git switch --detach "refs/tags/$tag"
+              echo "##vso[task.setvariable variable=releaseTag]$tag"
+            condition: eq(variables['Build.Reason'], 'ResourceTrigger')
+            displayName: Check out the current release
 
           - bash: |
               set -euo pipefail
@@ -69,14 +87,20 @@ stages:
               set -euo pipefail
               # Only a tag names a version. Everything else reports the commit
               # alone rather than inventing one.
-              if [[ "$(Build.SourceBranch)" == refs/tags/v* ]]; then
-                echo "##vso[task.setvariable variable=appVersion]$(Build.SourceBranchName)"
+              if [[ -n "$RELEASE_TAG" ]]; then
+                version="$RELEASE_TAG"
+              elif [[ "$(Build.SourceBranch)" == refs/tags/v* ]]; then
+                version="$(Build.SourceBranchName)"
               else
-                echo "##vso[task.setvariable variable=appVersion]"
+                version=""
               fi
-              echo "##vso[task.setvariable variable=appCommit]${COMMIT:0:7}"
+              # Build.SourceVersion is the commit the run started on, which is
+              # not the one a release checkout leaves behind.
+              commit=$(git rev-parse HEAD)
+              echo "##vso[task.setvariable variable=appVersion]$version"
+              echo "##vso[task.setvariable variable=appCommit]${commit:0:7}"
             env:
-              COMMIT: $(Build.SourceVersion)
+              RELEASE_TAG: $(releaseTag)
             displayName: Resolve the build identity
 
           - bash: npm run build
@@ -141,7 +165,7 @@ stages:
   - stage: Staging
     displayName: Deploy to staging
     dependsOn: Verify
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.Reason'], 'ResourceTrigger'))
     jobs:
       - job: Staging
         steps:
@@ -186,7 +210,7 @@ stages:
   - stage: Production
     displayName: Deploy to production
     dependsOn: Verify
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'), eq(variables['Build.Reason'], 'ResourceTrigger')))
     jobs:
       - job: Production
         steps:
